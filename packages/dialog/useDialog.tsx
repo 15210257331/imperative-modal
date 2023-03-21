@@ -19,7 +19,6 @@ export function useDialog() {
      * @returns  Promise
      */
     function open(dialog: Component, config: DialogConfig): Promise<any> {
-        // console.log(x.value, y.value);
         createDialog(dialog, { ...config, pointerX: x.value, pointerY: y.value })
         return modalRef?.value?.promise;
     }

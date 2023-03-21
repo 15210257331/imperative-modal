@@ -26,6 +26,7 @@
     "vue3",
     "vue3-dialog"
   ],
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/15210257331/vue3-dialog-c"
@@ -33,6 +34,9 @@
   "dependencies": {
     "@vueuse/core": "^9.13.0",
     "vue": "^3.2.47"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.0"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^5.1.1",

@@ -1,15 +1,19 @@
-import { Component, computed, defineComponent, provide, reactive, toRaw } from "vue";
+import { Component, computed, defineComponent, nextTick, provide, reactive, toRaw } from "vue";
 import { type Dialogs, type DialogConfig, InjectionKey, ProvideContext } from './types';
 import DialogContainer from "./DialogContainer.vue";
 
 
 export function useDialogProvider() {
     let uuid = 0;
+    let timeout: any = null;
     const getUuid = () => `__modal__${uuid++}`;
     const dialogs = reactive<Dialogs>({})
 
     // 创建弹窗
     function createDialog(dialog: Component, config: DialogConfig) {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
         let modalResolve!: (args?: unknown) => void;
         let modalReject!: (args?: unknown) => void;
         const dialogId = getUuid();
@@ -27,10 +31,9 @@ export function useDialogProvider() {
             reject: modalReject,
             resolve: modalResolve,
         }
-        setTimeout(() => {
+        nextTick(() => {
             dialogs[dialogId].visible = true;
-        }, 100)
-
+        })
     }
     // 销毁弹窗
     function disposeDialog() {
@@ -38,7 +41,7 @@ export function useDialogProvider() {
         const willHideDialog = dialogs[currentModalId as string];
         if (willHideDialog) {
             willHideDialog.visible = false;
-            setTimeout(() => {
+            timeout = setTimeout(() => {
                 delete dialogs[currentModalId as string]
             }, 300)
         }
@@ -46,7 +49,6 @@ export function useDialogProvider() {
         // if (activeModals.length > 1 ) {
         //     currentModalId
         // }
-
     }
 
     // 获取当前显示弹窗的ID
