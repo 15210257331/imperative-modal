@@ -3,20 +3,13 @@ import { createRouter, createWebHashHistory } from "vue-router";
 const routes = [
   {
     path: '/',
-    name: '组件页面',
-    component: () => import('@/home.vue'),
-    children: [
-      {
-        path: '/dialog',
-        name: '弹窗',
-        component: () => import('@/examples/dialog/index.md')
-      },
-      {
-        path: '/input',
-        name: '验证码',
-        component: () => import('@/examples/verification-code/index.md')
-      }
-    ]
+    name: '使用文档',
+    component: () => import('../views/doc/index.vue')
+  },
+  {
+    path: '/examples',
+    name: '组件demo',
+    component: () => import('../views/examples/index.md')
   }
 ]
  

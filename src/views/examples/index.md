@@ -5,5 +5,7 @@ import CodePreview from '@/components/CodePreview.vue'
 
 # dialog
 
-<demo/>
-<CodePreview compName="dialog" demoName="demo"/>
+
+<CodePreview demo-name="demo" title="">
+    <demo/>
+</CodePreview>
