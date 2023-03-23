@@ -13,7 +13,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { useDialog } from '../../packages/dialog';
+import { useDialog } from '../../../packages/dialog';
 
 const { close } = useDialog();
 

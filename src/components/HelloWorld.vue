@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import DemoDialog from './DemoDialog.vue';
+import DemoDialog from '../examples/dialog/DemoDialog.vue';
 import { useDialog, type DialogConfig } from '../../packages/dialog';
 
 const dialog = useDialog()

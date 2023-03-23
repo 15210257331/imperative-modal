@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --build tsconfig-build.json && vite build",
+    "build:doc": "vue-tsc && vite build",
+    "build:lib": "vue-tsc --build tsconfig-build.json && vite build",
     "release": "npm run build && release-it",
     "preview": "vite preview"
   },
@@ -33,6 +34,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",
+    "sass": "^1.59.3",
     "vue": "^3.2.0",
     "vue-router": "^4.1.6"
   },
