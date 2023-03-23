@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vue-tsc --build tsconfig-build.json ",
+    "build": "vue-tsc --build tsconfig-build.json && vite build",
     "release": "npm run build && release-it",
     "preview": "vite preview"
   },
@@ -33,7 +33,8 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",
-    "vue": "^3.2.47"
+    "vue": "^3.2.0",
+    "vue-router": "^4.1.6"
   },
   "peerDependencies": {
     "vue": "^3.2.0"
@@ -45,6 +46,7 @@
     "release-it": "^15.9.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
+    "vite-plugin-md": "^0.22.5",
     "vue-tsc": "^1.2.0"
   }
 }
