@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --build tsconfig-build.json && vite build",
-    "release": "npm run build && release-it",
+    "release": "release-it",
     "preview": "vite preview"
   },
   "keywords": [
