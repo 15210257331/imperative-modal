@@ -1,6 +1,6 @@
 {
   "name": "vue3-dialog-c",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "type": "module",
   "main": "lib/vue3-dialog.cjs.js",
   "module": "lib/vue3-dialog.es.js",
