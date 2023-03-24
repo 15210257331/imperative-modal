@@ -1,6 +1,6 @@
 {
   "name": "vue3-dialog-c",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "type": "module",
   "main": "lib/vue3-dialog.cjs.js",
   "module": "lib/vue3-dialog.es.js",
@@ -19,8 +19,8 @@
   "scripts": {
     "dev": "vite",
     "build:doc": "vue-tsc && vite build",
-    "build:lib": "vue-tsc --build tsconfig-build.json && vite build",
-    "release": "npm run build && release-it",
+    "build:lib": "vite build && vue-tsc --build tsconfig-build.json",
+    "release": "release-it",
     "preview": "vite preview"
   },
   "keywords": [
