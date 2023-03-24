@@ -1,5 +1,7 @@
 
 
+## [0.0.8](https://github.com/15210257331/vue3-dialog-c/compare/v0.0.7...v0.0.8) (2023-03-24)
+
 ## [0.0.7](https://github.com/15210257331/vue3-dialog-c/compare/v0.0.6...v0.0.7) (2023-03-24)
 
 
