@@ -1,43 +1,33 @@
 <template>
-    <button class="btn" type="button" @click="showDialog">显示弹窗</button>
+    <el-button type="primary" @click="showDialog">打开一个弹窗</el-button>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
 import DemoDialog from './DemoDialog.vue';
 import { useDialog, type DialogConfig } from '../../../packages/dialog';
 
 const dialog = useDialog()
 
+const config: DialogConfig = {
+    mask: true,
+    title: '这是一个弹窗的标题',
+    width: 600,
+    props: {
+        id: '这是传入的数据'
+    }
+}
+
 function showDialog() {
-    dialog.open(DemoDialog,
-        { 
-            mask: true, 
-            title: '这是一个弹窗', 
-            width: 600,
-            props: {
-                id: '这是传入的数据'
-            }
-        }).then(res => {
+    dialog.open(DemoDialog,config).then(res => {
             console.log(res);
+            ElMessage.success(res)
         }).catch(err => {
             console.log(err);
+            ElMessage.info('弹窗已销毁')
         })
 };
 
 </script>
 
-<style scoped>
-.btn {
-    border: 1px solid #4fdfff;
-    color: black;
-    background-color: #4fdf;
-    text-align: center;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 4px;
-    font-weight: 500;
-    padding: 0 20px;
-    cursor: pointer;
-}
-</style>
+<style scoped></style>

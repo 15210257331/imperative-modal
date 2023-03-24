@@ -31,6 +31,12 @@ html, body, #app{
   overflow: auto;
 }
 
+p, ul, li, ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 
 @media (prefers-color-scheme: light) {
   :root {

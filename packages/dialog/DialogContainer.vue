@@ -31,7 +31,7 @@ const props = defineProps({
   },
   width: {
     type: Number,
-    default: 600
+    default: 640
   },
   pointerX: {
     type: Number
@@ -88,6 +88,7 @@ function close() {
   background: rgba(0, 0, 0, 0.5);
   height: 100vh;
   transition: all 0.2s linear;
+  z-index: 999999;
 }
 
 .dialog {

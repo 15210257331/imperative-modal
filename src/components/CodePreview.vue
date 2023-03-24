@@ -3,13 +3,12 @@
     <div class="demo">
       <slot></slot>
     </div>
-    <pre class="code-source" :style="{height: showSourceCode ?'auto': '0px', borderTop: showSourceCode ? '1px solid #ebebeb': 'none'}">
-               <code ref="sourceCodeRef">{{ sourceCode }}</code>
-        </pre>
-    <div class="code-source-toggle">
-      <div class="showCode" @click="handleToggle">
-        <span>{{ showSourceCode ? "隐藏代码" : "显示代码" }}</span>
-      </div>
+    <pre :class="['code-source', expand ? 'expand' : '']">
+        <code ref="sourceCodeRef">{{ sourceCode }}</code>
+    </pre>
+    <div class="operate">
+      <span class="toggle" @click="handleToggle">{{ expand ? "隐藏代码" : "显示代码" }}</span>
+      <span class="copy" @click="handleCopy">复制代码</span>
     </div>
   </div>
 </template>
@@ -35,12 +34,16 @@ const props = defineProps({
   },
 });
 
-const showSourceCode = ref<boolean>(false);
+const expand = ref<boolean>(false);
 const sourceCode = ref("");
 const sourceCodeRef = ref<HTMLElement | null>(null)
 
 function handleToggle() {
-  showSourceCode.value = !showSourceCode.value;
+  expand.value = !expand.value;
+}
+
+function handleCopy() {
+  console.log('复制成功');
 }
 
 async function getSourceCode() {
@@ -59,8 +62,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .code-preview {
-  width: 600px;
-  margin: 10px 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 16px 0;
   border: 1px solid #ebebeb;
   border-radius: 3px;
   box-sizing: border-box;
@@ -70,18 +74,36 @@ onMounted(() => {
   }
 
   .code-source {
-    transition: all 0.3s linear;
-    height: 0px;
+    transition: all 0.4s ease;
     padding: 0 10px;
-    overflow: hidden;
     margin: 0;
+    background-color: #fafafa;
+    border-top: 1px solid #eaeefb;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+  }
+  .expand {
+    max-height: 1000px;
+    opacity: 1;
   }
 
-  .code-source-toggle {
+  .operate {
     border-top: 1px solid #ebebeb;
+    padding: 0 20px;
     height: 30px;
     line-height: 30px;
-    text-align: center;
+    text-align: right;
+    span {
+      margin: 0 10px;
+      cursor: pointer;
+      font-size: 14px;
+      color: #888;
+      font-weight: 600;
+      &:hover {
+        color: #409eff
+      }
+     }
   }
 }
 </style>
