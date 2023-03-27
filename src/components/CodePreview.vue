@@ -4,11 +4,11 @@
       <slot></slot>
     </div>
     <pre :class="['code-source', expand ? 'expand' : '']">
-        <code ref="sourceCodeRef">{{ sourceCode }}</code>
-    </pre>
+          <code ref="sourceCodeRef">{{ sourceCode }}</code>
+      </pre>
     <div class="operate">
       <span class="toggle" @click="handleToggle">{{ expand ? "隐藏代码" : "显示代码" }}</span>
-      <span class="copy" @click="handleCopy">复制代码</span>
+      <!-- <span class="copy" @click="handleCopy">复制代码</span> -->
     </div>
   </div>
 </template>
@@ -19,17 +19,9 @@ import hljs from "highlight.js";
 import "highlight.js/styles/color-brewer.css";
 
 const props = defineProps({
-  name: {
-    type: String,
-  },
   compName: {
-    type: String,
-    default: "",
-    require: true,
-  },
-  demoName: {
-    type: String,
-    default: "",
+    type: Array,
+    default: () => [],
     require: true,
   },
 });
@@ -47,10 +39,11 @@ function handleCopy() {
 }
 
 async function getSourceCode() {
-  let msg = await import(/* @vite-ignore */ `../views/examples/${props.demoName}.vue?raw`)
-  sourceCode.value = msg.default;
+  await Promise.all(props.compName.map(async (item) => {
+    let msg = await import(/* @vite-ignore */ `../views/examples/${item}.vue?raw`)
+    sourceCode.value = sourceCode.value + msg.default;
+  }))
   await nextTick(() => {
-    console.log(sourceCodeRef.value);
     hljs.highlightBlock(sourceCodeRef.value as HTMLElement);
   })
 }
@@ -77,33 +70,34 @@ onMounted(() => {
     transition: all 0.4s ease;
     padding: 0 10px;
     margin: 0;
-    background-color: #fafafa;
+    // background-color: #fafafa;
     border-top: 1px solid #eaeefb;
     overflow: hidden;
     max-height: 0;
     opacity: 0;
   }
+
   .expand {
-    max-height: 1000px;
+    max-height: 2000px;
     opacity: 1;
   }
 
   .operate {
     border-top: 1px solid #ebebeb;
-    padding: 0 20px;
-    height: 30px;
-    line-height: 30px;
+    height: 40px;
+    line-height: 40px;
     text-align: right;
+
     span {
       margin: 0 10px;
       cursor: pointer;
       font-size: 14px;
       color: #888;
       font-weight: 600;
+
       &:hover {
         color: #409eff
       }
-     }
+    }
   }
-}
-</style>
+}</style>

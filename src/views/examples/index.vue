@@ -1,16 +1,16 @@
 <template>
-    <h2>组件示例</h2>
-    <CodePreview demo-name="demo">
-        <demo />
+    <h2 class="title">组件示例</h2>
+    <CodePreview :comp-name="['Demo', 'DemoDialog']">
+        <Demo />
     </CodePreview>
-    <h2>配置项</h2>
+    <h2 class="title">配置项</h2>
     <el-table :data="tableData" style="width: 100%" border>
         <el-table-column prop="arg" label="参数" />
         <el-table-column prop="des" label="描述" />
         <el-table-column prop="type" label="类型" />
         <el-table-column prop="default" label="默认值" />
     </el-table>
-    <h2>方法</h2>
+    <h2 class="title">方法</h2>
     <el-table :data="tableData2" style="width: 100%" border>
         <el-table-column prop="name" label="名称" />
         <el-table-column prop="des" label="描述" />
@@ -19,7 +19,8 @@
 </template>
 
 <script setup lang="ts">
-import demo from './demo.vue';
+import Demo from './Demo.vue';
+import DemoDialog from './DemoDialog.vue';
 import CodePreview from "@/components/CodePreview.vue"
 
 const tableData = [
@@ -63,4 +64,8 @@ const tableData2 = [
 ]
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.title {
+    margin-top: 0;
+}
+</style>

@@ -3,17 +3,17 @@
     <div class="app-container">
       <header class="header">
         <div class="header-content">
-          <div class="logo">
-            <span>vue3 dialog</span>
-          </div>
+          <img class="logo" src="./assets/vue.svg" alt="">
           <nav class="nav">
             <router-link active-class="active" to="/">文档</router-link>
             <router-link active-class="active" to="/examples">组件</router-link>
           </nav>
         </div>
       </header>
-      <div class="content">
-        <router-view></router-view>
+      <div class="body">
+        <div class="body-content">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
   </DialogProvider>
@@ -37,7 +37,7 @@ import { DialogProvider } from '../packages/dialog'
     width: 100%;
     box-sizing: border-box;
     min-height: 65px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(60, 60, 67, .12);
 
     &-content {
       height: 100%;
@@ -48,15 +48,13 @@ import { DialogProvider } from '../packages/dialog'
       width: 1200px;
 
       .logo {
-        height: 100%;
-        line-height: 65px;
-        text-align: center;
-        color:#646cffaa;
-        font-size: 28px;
+        width: 42px;
+        height: 42px;
+        margin-left: 30px;
       }
 
       .nav {
-        margin-left: 100px;
+        margin-left: 70px;
         height: 100%;
         display: flex;
         align-items: center;
@@ -77,15 +75,18 @@ import { DialogProvider } from '../packages/dialog'
         }
       }
     }
-
-
   }
-
-  .content {
+  .body {
+    width: 100%;
+    box-sizing: border-box;
     flex: 1;
-    width: 1200px;
     overflow: auto;
-    margin: 20px;
+    padding: 20px;
+    .body-content {
+      width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
   }
 }
 </style>
