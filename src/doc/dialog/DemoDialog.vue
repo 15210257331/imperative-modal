@@ -20,6 +20,7 @@
 </template>
 <script lang="ts" setup>
 import { useDialog } from '../../../packages/dialog';
+import { onBeforeUnmount, onMounted } from 'vue';
 
 const { close } = useDialog();
 
@@ -28,6 +29,14 @@ const props = defineProps({
         type: String
     }
 })
+onMounted(() => {
+    console.log('钩子函数 mounted');
+})
+
+onBeforeUnmount(() => {
+    console.log('钩子函数 unmount');
+})
+
 
 function confirm() {
     new Promise((resolve, reject) => {

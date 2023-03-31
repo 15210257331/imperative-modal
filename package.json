@@ -18,8 +18,8 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build:doc": "vue-tsc && vite build",
-    "build:lib": "vite build && vue-tsc --build tsconfig-build.json",
+    "build": "vue-tsc --build tsconfig.lib.json && vite build --config vite.config.ts && node ./build/copyDemo.js",
+    "build:lib": "vite build --config vite.config.lib.ts && vue-tsc --build tsconfig.lib.json",
     "release": "release-it",
     "preview": "vite preview"
   },
@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@vueuse/core": "^9.13.0",
+    "copy-dir": "^1.3.0",
     "element-plus": "^2.3.1",
     "highlight.js": "^11.7.0",
     "sass": "^1.59.3",

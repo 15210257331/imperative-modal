@@ -4,13 +4,18 @@ const routes = [
   {
     path: '/',
     name: '使用文档',
-    component: () => import('../views/doc/index.md')
+    component: () => import('../doc/guide/index.md')
   },
   {
-    path: '/examples',
-    name: '组件demo',
-    component: () => import('../views/examples/index.vue')
-  }
+    path: '/dialog',
+    name: '弹窗组件',
+    component: () => import('../doc/dialog/index.vue')
+  },
+  {
+    path: '/code',
+    name: '图片验证码',
+    component: () => import('../doc/ImageCode/index.vue')
+  },
 ]
  
 const router = createRouter({

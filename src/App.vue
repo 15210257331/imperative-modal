@@ -5,8 +5,7 @@
         <div class="header-content">
           <img class="logo" src="./assets/vue.svg" alt="">
           <nav class="nav">
-            <router-link active-class="active" to="/">文档</router-link>
-            <router-link active-class="active" to="/examples">组件</router-link>
+            <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">{{ item.name }}</router-link>
           </nav>
         </div>
       </header>
@@ -20,7 +19,13 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { DialogProvider } from '../packages/dialog'
+
+const router = useRouter();
+
+const routes = router.getRoutes();
+// console.log(routes);
 </script>
 
 

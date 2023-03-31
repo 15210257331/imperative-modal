@@ -1,6 +1,6 @@
 <template>
     <h2 class="title">组件示例</h2>
-    <CodePreview :comp-name="['Demo', 'DemoDialog']">
+    <CodePreview :comp-name="['dialog/Demo', 'dialog/DemoDialog']">
         <Demo />
     </CodePreview>
     <h2 class="title">配置项</h2>
@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 import Demo from './Demo.vue';
-import DemoDialog from './DemoDialog.vue';
 import CodePreview from "@/components/CodePreview.vue"
 
 const tableData = [

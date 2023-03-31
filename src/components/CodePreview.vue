@@ -4,9 +4,9 @@
       <slot></slot>
     </div>
     <pre :class="['code-source', expand ? 'expand' : '']">
-          <code ref="sourceCodeRef">{{ sourceCode }}</code>
-      </pre>
-    <div class="operate">
+              <code ref="sourceCodeRef">{{ sourceCode }}</code>
+          </pre>
+    <div class="control">
       <span class="toggle" @click="handleToggle">{{ expand ? "隐藏代码" : "显示代码" }}</span>
       <!-- <span class="copy" @click="handleCopy">复制代码</span> -->
     </div>
@@ -17,6 +17,7 @@
 import { computed, nextTick, onMounted, ref } from "vue";
 import hljs from "highlight.js";
 import "highlight.js/styles/color-brewer.css";
+const isDev = import.meta.env.MODE === 'development';
 
 const props = defineProps({
   compName: {
@@ -39,10 +40,19 @@ function handleCopy() {
 }
 
 async function getSourceCode() {
-  await Promise.all(props.compName.map(async (item) => {
-    let msg = await import(/* @vite-ignore */ `../views/examples/${item}.vue?raw`)
-    sourceCode.value = sourceCode.value + msg.default;
-  }))
+  if (isDev) {
+    await Promise.all(props.compName.map(async (item) => {
+      const url = `../doc/${item}.vue?raw`
+      let msg = await import(/* @vite-ignore */ url)
+      sourceCode.value = sourceCode.value + msg.default;
+    }))
+  } else {
+    await Promise.all(props.compName.map(async (item) => {
+      const url = `/doc/${item}.vue?raw`
+      let msg = await fetch(url).then(res => res.text());
+      sourceCode.value = sourceCode.value + msg;
+    }))
+  }
   await nextTick(() => {
     hljs.highlightBlock(sourceCodeRef.value as HTMLElement);
   })
@@ -82,11 +92,11 @@ onMounted(() => {
     opacity: 1;
   }
 
-  .operate {
+  .control {
     border-top: 1px solid #ebebeb;
     height: 40px;
     line-height: 40px;
-    text-align: right;
+    text-align: center;
 
     span {
       margin: 0 10px;
@@ -100,4 +110,5 @@ onMounted(() => {
       }
     }
   }
-}</style>
+}
+</style>
