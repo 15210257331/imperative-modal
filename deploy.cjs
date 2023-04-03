@@ -6,17 +6,56 @@ const fs = require('fs')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
 
-const deployConfig = {
-  projectName: 'vue3-dialog',
-  type: 'docker',
-  remoteDirectory: '/root/web',
-  host: {
-    host: '*******', // 服务器 host
-    port: 22, // 服务器 port
-    username: '********', // 服务器用户名
-    password: '********' // 服务器密码
+const questions = [
+  {
+    type: 'list',
+    message: '请选择发布环境',
+    name: 'env',
+    choices: [
+      {
+        name: '本地环境',
+        value: '本地环境'
+      },
+      {
+        name: '正式环境',
+        value: '正式环境'
+      }
+    ]
+  },
+  {
+    type: 'input',
+    name: 'username',
+    message: '请输入服务器用户名:'
+  },
+  {
+    type: 'password',
+    name: 'password',
+    message: '服务器密码:',
+    mask: '*'
   }
-}
+]
+
+inquirer.prompt(questions).then(answer => {
+  console.log(`开始构建${answer.env}....`)
+  const { evn, username, password } = answer
+  if (evn === '本地环境') {
+    console.log(chalk.green('敬请期待'))
+  } else {
+    const deployConfig = {
+      projectName: 'vue3-dialog',
+      type: 'docker',
+      remoteDirectory: '/root/web',
+      host: {
+        host: '129.211.164.125', // 服务器 host
+        port: 22, // 服务器 port
+        username: username, // 服务器用户名
+        password: password // 服务器密码
+      }
+    }
+    const app = new App(deployConfig)
+    app.deploy()
+  }
+})
 
 class App {
   constructor(config) {
@@ -143,32 +182,3 @@ class App {
     })
   }
 }
-
-inquirer
-  .prompt([
-    {
-      type: 'list',
-      message: '请选择发布环境',
-      name: 'env',
-      choices: [
-        {
-          name: '本地环境',
-          value: '本地环境'
-        },
-        {
-          name: '正式环境',
-          value: '正式环境'
-        }
-      ]
-    }
-  ])
-  .then(answers => {
-    console.log(`开始构建${answers.env}....`)
-    const evn = answers.env
-    if (evn === '本地环境') {
-      console.log(chalk.green('敬请期待'))
-    } else {
-      const app = new App(deployConfig)
-      app.deploy()
-    }
-  })

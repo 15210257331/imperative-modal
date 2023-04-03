@@ -44,17 +44,19 @@ async function getSourceCode() {
     await Promise.all(props.compName.map(async (item) => {
       const url = `../doc/${item}.vue?raw`
       let msg = await import(/* @vite-ignore */ url)
+      console.log(msg);
       sourceCode.value = sourceCode.value + msg.default;
     }))
   } else {
     await Promise.all(props.compName.map(async (item) => {
       const url = `/doc/${item}.vue?raw`
       let msg = await fetch(url).then(res => res.text());
+      console.log(msg);
       sourceCode.value = sourceCode.value + msg;
     }))
   }
   await nextTick(() => {
-    hljs.highlightBlock(sourceCodeRef.value as HTMLElement);
+    hljs.highlightElement(sourceCodeRef.value as HTMLElement);
   })
 }
 

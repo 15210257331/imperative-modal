@@ -1,5 +1,5 @@
-import { createRouter, createWebHashHistory } from "vue-router";
- 
+import { createRouter, createWebHashHistory } from 'vue-router'
+
 const routes = [
   {
     path: '/',
@@ -14,13 +14,18 @@ const routes = [
   {
     path: '/code',
     name: '图片验证码',
-    component: () => import('../doc/ImageCode/index.vue')
+    component: () => import('../doc/verify/index.vue')
   },
+  {
+    path: '/test',
+    name: '测试组件',
+    component: () => import('../doc/test/index.vue')
+  }
 ]
- 
+
 const router = createRouter({
   history: createWebHashHistory(),
-  routes,
-});
- 
-export default router;
+  routes
+})
+
+export default router
