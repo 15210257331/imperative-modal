@@ -11,10 +11,10 @@ const deployConfig = {
   type: 'docker',
   remoteDirectory: '/root/web',
   host: {
-    host: '129.211.164.125', // 服务器 host
+    host: '*******', // 服务器 host
     port: 22, // 服务器 port
-    username: 'root', // 服务器用户名
-    password: 'Da!Mo@Gu#220416' // 服务器密码
+    username: '********', // 服务器用户名
+    password: '********' // 服务器密码
   }
 }
 
