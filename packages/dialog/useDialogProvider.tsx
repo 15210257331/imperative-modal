@@ -6,7 +6,7 @@ import DialogContainer from "./DialogContainer.vue";
 export function useDialogProvider() {
     let uuid = 0;
     let timeout: any = null;
-    const getUuid = () => `__modal__${uuid++}`;
+    const getUuid = () => `__dialog__${uuid++}`;
     const dialogs = reactive<Dialogs>({})
 
     // 创建弹窗
@@ -14,22 +14,22 @@ export function useDialogProvider() {
         if (timeout) {
             clearTimeout(timeout);
         }
-        let modalResolve!: (args?: unknown) => void;
-        let modalReject!: (args?: unknown) => void;
+        let dialogResolve!: (args?: unknown) => void;
+        let dialogReject!: (args?: unknown) => void;
         const dialogId = getUuid();
         const promise = new Promise((resolve, reject) => {
-            modalResolve = resolve;
-            modalReject = reject;
+            dialogResolve = resolve;
+            dialogReject = reject;
         });
         const { props, ...containerConfig } = config;
-        const newModal = create(dialog, containerConfig, props)
+        const newDialog = create(dialog, containerConfig, props)
         dialogs[dialogId] = {
-            component: newModal,
+            component: newDialog,
             config,
             visible: false,
             promise,
-            reject: modalReject,
-            resolve: modalResolve,
+            resolve: dialogResolve,
+            reject: dialogReject,
         }
         nextTick(() => {
             dialogs[dialogId].visible = true;
@@ -37,33 +37,30 @@ export function useDialogProvider() {
     }
     // 销毁弹窗
     function disposeDialog() {
-        const currentModalId = getDialogId();
-        const willHideDialog = dialogs[currentModalId as string];
+        const currentDialogId = getDialogId();
+        const willHideDialog = dialogs[currentDialogId as string];
         if (willHideDialog) {
             willHideDialog.visible = false;
             timeout = setTimeout(() => {
-                delete dialogs[currentModalId as string]
+                delete dialogs[currentDialogId as string]
             }, 300)
         }
-        // const activeModals = Object.keys(modals).filter(id => modals[id].visible)
-        // if (activeModals.length > 1 ) {
-        //     currentModalId
-        // }
     }
 
     // 获取当前显示弹窗的ID
     function getDialogId() {
-        const currentModalIds = Object.keys(dialogs).filter(id => !!dialogs[id])
-        return currentModalIds.length > 0 ? currentModalIds[0] : ''
+        const currentDialogIds = Object.keys(dialogs).filter(id => !!dialogs[id])
+        return currentDialogIds.length > 0 ? currentDialogIds[0] : ''
     }
 
     /** 创建弹窗容器 */
-    function create(Modal: any, containerConfig: any, props: any) {
+    function create(Dialog: any, containerConfig: any, props: any) {
+        console.log(containerConfig);
         return defineComponent({
             render() {
                 return (
                     <DialogContainer {...containerConfig}>
-                        <Modal {...props} />
+                        <Dialog {...props} />
                     </DialogContainer>
                 );
             },
@@ -73,8 +70,8 @@ export function useDialogProvider() {
     provide<ProvideContext>(InjectionKey, { dialogs, createDialog, disposeDialog, getDialogId });
 
     const dialogList = computed(() => {
-        const visibleModalIds = Object.keys(dialogs).filter((id) => !!dialogs[id]);
-        return visibleModalIds
+        const visibleDialogIds = Object.keys(dialogs).filter((id) => !!dialogs[id]);
+        return visibleDialogIds
             .map((id) => {
                 return {
                     id,

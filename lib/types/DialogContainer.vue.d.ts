@@ -1,10 +1,11 @@
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    modalId: {
-        type: StringConstructor;
-    };
     title: {
         type: StringConstructor;
         default: string;
+    };
+    mask: {
+        type: BooleanConstructor;
+        default: boolean;
     };
     width: {
         type: NumberConstructor;
@@ -17,12 +18,13 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
         type: NumberConstructor;
     };
 }, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    modalId: {
-        type: StringConstructor;
-    };
     title: {
         type: StringConstructor;
         default: string;
+    };
+    mask: {
+        type: BooleanConstructor;
+        default: boolean;
     };
     width: {
         type: NumberConstructor;
@@ -36,6 +38,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     };
 }>>, {
     title: string;
+    mask: boolean;
     width: number;
 }>, {
     default: (_: {}) => any;

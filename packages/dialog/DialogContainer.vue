@@ -1,5 +1,5 @@
 <template>
-  <div class="dialog-overlay" :id="modalId" :style="{opacity: visible ? '1':'0'}" @click="handleOverlayClick">
+  <div class="dialog-overlay" :style="{opacity: visible ? '1':'0'}" @click="handleOverlayClick">
     <div role="dialog" tabindex="-1" class="dialog" :style="styleObject">
       <div class="dialog-header">
         <p class="title">{{ title }}</p>
@@ -22,12 +22,13 @@ import { InjectionKey } from "./types";
 const { dialogs, createDialog, disposeDialog, getDialogId } = inject<any>(InjectionKey)
 
 const props = defineProps({
-  modalId: {
-    type: String,
-  },
   title: {
     type: String,
     default: "dialog"
+  },
+  mask: {
+    type: Boolean,
+    default: true
   },
   width: {
     type: Number,

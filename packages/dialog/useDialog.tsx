@@ -8,7 +8,7 @@ export function useDialog() {
 
     const { dialogs, createDialog, disposeDialog, getDialogId, } = inject<any>(InjectionKey)
 
-    const modalRef = computed(() => {
+    const dialogRef = computed(() => {
         return (dialogs && getDialogId) ? dialogs[getDialogId()] : null;
     })
 
@@ -20,18 +20,18 @@ export function useDialog() {
      */
     function open(dialog: Component, config: DialogConfig): Promise<any> {
         createDialog(dialog, { ...config, pointerX: x.value, pointerY: y.value })
-        return modalRef?.value?.promise;
+        return dialogRef?.value?.promise;
     }
 
     /**
      * 隐藏弹窗
-     * @param data 向外层传递的数据
+     * @param data 向外传递的数据
      */
     function close(data?: any): void {
         if (data) {
-            modalRef?.value?.resolve(data)
+            dialogRef?.value?.resolve(data)
         } else {
-            modalRef?.value?.reject('取消')
+            dialogRef?.value?.reject('取消')
         }
         disposeDialog();
     }
