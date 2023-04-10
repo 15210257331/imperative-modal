@@ -1,6 +1,6 @@
 <template>
   <h2 class="title">组件示例</h2>
-  <CodePreview :comp-name="['test/Demo']">
+  <CodePreview :comp-name="['calendar/Demo']">
     <Demo />
   </CodePreview>
 </template>

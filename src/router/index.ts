@@ -18,8 +18,8 @@ const routes = [
   },
   {
     path: '/test',
-    name: '测试组件',
-    component: () => import('../doc/test/index.vue')
+    name: '日历组件',
+    component: () => import('../doc/calendar/index.vue')
   }
 ]
 
