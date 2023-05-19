@@ -20,6 +20,7 @@ export interface Dialogs {
         component: Component;
         config: DialogConfig,
         visible: boolean,
+        zIndex: number,
         promise: Promise<any>;
         resolve: (args?: any) => void;
         reject: (args?: any) => void;

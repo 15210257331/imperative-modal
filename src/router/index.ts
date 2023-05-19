@@ -8,18 +8,8 @@ const routes = [
   },
   {
     path: '/dialog',
-    name: '弹窗组件',
+    name: '组件示例',
     component: () => import('../doc/dialog/index.vue')
-  },
-  {
-    path: '/code',
-    name: '图片验证码',
-    component: () => import('../doc/verify/index.vue')
-  },
-  {
-    path: '/test',
-    name: '日历组件',
-    component: () => import('../doc/calendar/index.vue')
   }
 ]
 

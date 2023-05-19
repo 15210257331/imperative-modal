@@ -3,7 +3,10 @@
     <div class="app-container">
       <header class="header">
         <div class="header-content">
-          <img class="logo" src="./assets/vue.svg" alt="" />
+          <div class="logo">
+            <img class="logo" src="./assets/vue.svg" alt="" />
+            <span>vue 命令式弹窗组件</span>
+          </div>
           <nav class="nav">
             <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">{{
               item.name
@@ -54,9 +57,17 @@ const routes = router.getRoutes()
       width: 1200px;
 
       .logo {
-        width: 42px;
-        height: 42px;
-        margin-left: 30px;
+        display: flex;
+        align-items: center;
+        img {
+          width: 38px;
+          height: 38px;
+        }
+        span {
+          font-size: 20px;
+          font-weight: 600;
+          margin-left: 15px;
+        }
       }
 
       .nav {

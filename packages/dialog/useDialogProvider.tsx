@@ -5,6 +5,7 @@ import DialogContainer from "./DialogContainer.vue";
 
 export function useDialogProvider() {
     let uuid = 0;
+    let zIndex = 9999;
     let timeout: any = null;
     const getUuid = () => `__dialog__${uuid++}`;
     const dialogs = reactive<Dialogs>({})
@@ -27,6 +28,7 @@ export function useDialogProvider() {
             component: newDialog,
             config,
             visible: false,
+            zIndex: zIndex++,
             promise,
             resolve: dialogResolve,
             reject: dialogReject,
@@ -47,10 +49,10 @@ export function useDialogProvider() {
         }
     }
 
-    // 获取当前显示弹窗的ID
+    // 获取显示的最上层的弹窗的ID
     function getDialogId() {
         const currentDialogIds = Object.keys(dialogs).filter(id => !!dialogs[id])
-        return currentDialogIds.length > 0 ? currentDialogIds[0] : ''
+        return currentDialogIds.length > 0 ? currentDialogIds[currentDialogIds.length - 1] : ''
     }
 
     /** 创建弹窗容器 */
