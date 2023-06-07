@@ -41,6 +41,7 @@
     "element-plus": "^2.3.1",
     "highlight.js": "^11.7.0",
     "sass": "^1.59.3",
+    "seemly": "^0.3.6",
     "vue": "^3.2.0",
     "vue-router": "^4.1.6"
   },

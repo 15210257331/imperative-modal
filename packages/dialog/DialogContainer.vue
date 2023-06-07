@@ -1,43 +1,41 @@
 <template>
-  <div class="dialog-overlay" :style="overlayStyle" @click="handleOverlayClick">
+  <div class="dialog-mask" :style="maskStyle" @click="handleOverlayClick">
     <div role="dialog" tabindex="-1" class="dialog" :style="dialogStyle">
       <div class="dialog-header">
         <p class="title">{{ title }}</p>
-        <i class="close-icon" @click="close">
-          <svg
-            t="1679295681396"
-            class="icon"
-            viewBox="0 0 1024 1024"
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            p-id="3779"
-            width="26"
-            height="26"
-          >
-            <path
-              d="M572.16 512l183.466667-183.04a42.666667 42.666667 0 1 0-60.586667-60.586667L512 451.84l-183.04-183.466667a42.666667 42.666667 0 0 0-60.586667 60.586667l183.466667 183.04-183.466667 183.04a42.666667 42.666667 0 0 0 0 60.586667 42.666667 42.666667 0 0 0 60.586667 0l183.04-183.466667 183.04 183.466667a42.666667 42.666667 0 0 0 60.586667 0 42.666667 42.666667 0 0 0 0-60.586667z"
-              p-id="3780"
-            ></path>
-          </svg>
-        </i>
+        <i class="close-icon" @click="close"><Close /> </i>
       </div>
       <div class="dialog-body">
         <slot></slot>
+        <slot name="confirm"></slot>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { computed, inject } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { InjectionKey } from './types'
+import Info from '../icons/Info'
+import Close from '../icons/Close'
 
-const { dialogs, disposeDialog } = inject<any>(InjectionKey)
+const { dialogReactiveList, disposeDialog } = inject<any>(InjectionKey)
+
+const iconRenderMap = {
+  info: () => Info,
+  success: () => Info,
+  warning: () => Info,
+  error: () => Info
+}
 
 const props = defineProps({
   // 弹窗ID
   id: {
     type: String,
     required: true
+  },
+  type: {
+    type: String,
+    default: 'default'
   },
   title: {
     type: String,
@@ -60,14 +58,14 @@ const props = defineProps({
 })
 
 const dialogRef = computed(() => {
-  return dialogs[props.id]
+  return dialogReactiveList.value.find((item: any) => item.id == props.id)
 })
 
 const visible = computed(() => {
-  return dialogRef.value.visible
+  return dialogRef.value?.visible
 })
 
-const overlayStyle = computed(() => {
+const maskStyle = computed(() => {
   return {
     opacity: visible.value ? '1' : '0',
     zIndex: dialogRef.value?.zIndex
@@ -101,7 +99,7 @@ function close() {
 </script>
 
 <style scoped>
-.dialog-overlay {
+.dialog-mask {
   position: fixed;
   overflow: hidden;
   left: 0;

@@ -24,7 +24,7 @@ import { useDialog } from '../../../packages/dialog'
 import NestDialogDemo from './NestDialogDemo.vue'
 import { onBeforeUnmount, onMounted } from 'vue'
 
-const { open, close } = useDialog()
+const { create, close } = useDialog()
 
 const props = defineProps({
   id: {
@@ -40,7 +40,7 @@ onBeforeUnmount(() => {
 })
 
 function showDialog() {
-  open(NestDialogDemo, { width: 300, props: {} })
+  create({ component: NestDialogDemo, width: 300, props: {} })
     .then(res => {
       console.log(res)
     })
