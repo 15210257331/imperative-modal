@@ -1,5 +1,5 @@
 {
-  "name": "vue3-dialog-c",
+  "name": "grocery",
   "version": "0.0.11",
   "type": "module",
   "main": "lib/vue3-dialog.cjs.js",

@@ -5,20 +5,14 @@
         <div class="header-content">
           <div class="logo">
             <img class="logo" src="./assets/vue.svg" alt="" />
-            <span>vue 命令式弹窗组件</span>
+            <span>xialkajlsd</span>
           </div>
-          <nav class="nav">
-            <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">{{
-              item.name
-            }}</router-link>
-          </nav>
+          <nav class="nav"></nav>
         </div>
       </header>
-      <div class="body">
-        <div class="body-content">
-          <router-view></router-view>
-        </div>
-      </div>
+      <content class="content">
+        <router-view></router-view>
+      </content>
     </div>
   </DialogProvider>
 </template>
@@ -94,18 +88,13 @@ const routes = router.getRoutes()
     }
   }
 
-  .body {
+  .content {
     width: 100%;
     box-sizing: border-box;
     flex: 1;
-    overflow: auto;
-    padding: 20px;
-
-    .body-content {
-      width: 1200px;
-      margin: 0 auto;
-      overflow: hidden;
-    }
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px 200px;
   }
 }
 </style>
