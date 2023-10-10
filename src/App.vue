@@ -4,15 +4,23 @@
       <header class="header">
         <div class="header-content">
           <div class="logo">
-            <img class="logo" src="./assets/vue.svg" alt="" />
+            <img src="./assets/logo.webp" alt="" />
             <span>xialkajlsd</span>
           </div>
-          <nav class="nav"></nav>
+          <nav class="nav">
+            <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">
+              <div class="list-item">
+                <p>{{ item.name }}</p>
+              </div>
+            </router-link>
+          </nav>
         </div>
       </header>
-      <content class="content">
-        <router-view></router-view>
-      </content>
+      <div class="content">
+        <div class="content-body">
+          <router-view></router-view>
+        </div>
+      </div>
     </div>
   </DialogProvider>
 </template>
@@ -41,21 +49,21 @@ const routes = router.getRoutes()
     box-sizing: border-box;
     min-height: 65px;
     border-bottom: 1px solid rgba(60, 60, 67, 0.12);
-
-    &-content {
+    .header-content {
+      width: 1200px;
       height: 100%;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      width: 1200px;
-
       .logo {
         display: flex;
         align-items: center;
         img {
-          width: 38px;
-          height: 38px;
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          cursor: pointer;
         }
         span {
           font-size: 20px;
@@ -90,11 +98,17 @@ const routes = router.getRoutes()
 
   .content {
     width: 100%;
-    box-sizing: border-box;
     flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 20px 200px;
+    text-align: center;
+    .content-body {
+      width: 1200px;
+      margin: 0 auto;
+      padding: 0 10px;
+      overflow: hidden;
+      text-align: left;
+    }
   }
 }
 </style>

@@ -42,14 +42,14 @@ function handleCopy() {
 async function getSourceCode() {
   if (isDev) {
     await Promise.all(props.compName.map(async (item) => {
-      const url = `../doc/${item}.vue?raw`
+      const url = `../views/${item}.vue?raw`
       let msg = await import(/* @vite-ignore */ url)
       console.log(msg);
       sourceCode.value = sourceCode.value + msg.default;
     }))
   } else {
     await Promise.all(props.compName.map(async (item) => {
-      const url = `/doc/${item}.vue?raw`
+      const url = `/views/${item}.vue?raw`
       let msg = await fetch(url).then(res => res.text());
       console.log(msg);
       sourceCode.value = sourceCode.value + msg;

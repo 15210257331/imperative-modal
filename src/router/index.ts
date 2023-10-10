@@ -1,20 +1,30 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-  {
-    path: '/',
-    name: '列表',
-    component: () => import('../doc/List.vue')
-  },
+  // {
+  //   path: '/',
+  //   name: '列表',
+  //   component: () => import('../doc/List.vue')
+  // },
   {
     path: '/dialog',
-    name: '弹窗',
-    component: () => import('../doc/dialog/index.vue')
+    name: '弹窗组件',
+    component: () => import('../views/Dialog/index.vue')
   },
   {
-    path: '/:id',
-    name: '详情',
-    component: () => import('../doc/Detail.vue')
+    path: '/svg',
+    name: 'SVG案例',
+    component: () => import('../views/SvgCase/index.vue')
+  },
+  {
+    path: '/three',
+    name: 'three.js案例',
+    component: () => import('../views/ThreejsCase/index.vue')
+  },
+  {
+    path: '/upload',
+    name: '文件上传',
+    component: () => import('../views/Upload/index.vue')
   }
 ]
 

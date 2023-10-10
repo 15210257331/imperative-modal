@@ -6,6 +6,7 @@
 import * as THREE from 'three';
 // 引入轨道控制器扩展库OrbitControls.js
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { onMounted } from 'vue';
 
 // AxesHelper：辅助观察的坐标系
 const axesHelper = new THREE.AxesHelper(300);
@@ -61,7 +62,7 @@ function render() {
 }
 
 onMounted(() => {
-  document.getElementById('webgl').appendChild(renderer.domElement);
+  document.getElementById('webgl')?.appendChild(renderer.domElement);
   // 设置相机控件轨道控制器OrbitControls
   const controls = new OrbitControls(camera, renderer.domElement);
   // 如果OrbitControls改变了相机参数，重新调用渲染器渲染三维场景
