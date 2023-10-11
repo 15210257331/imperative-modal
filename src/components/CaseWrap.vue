@@ -19,17 +19,19 @@ const props = defineProps<Props>()
   width: 100%;
   height: auto;
   margin: 24px 0;
+  padding: 12px;
+  // box-shadow: 0 0 6px #ccc;
+  border-radius: 6px;
+  border: 1px solid #ededed;
+  background-color: white;
   .title {
     text-align: left;
-    font-size: 28px;
+    font-size: 23px;
+    font-weight: 500;
     margin-bottom: 20px;
   }
   .content {
-    box-shadow: 0 0 10px #ccc;
     min-width: 320px;
-    border-radius: 10px;
-    background-color: white;
-    padding: 20px;
   }
 }
 </style>

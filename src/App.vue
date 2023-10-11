@@ -5,7 +5,7 @@
         <div class="header-content">
           <div class="logo">
             <img src="./assets/logo.webp" alt="" />
-            <span>xialkajlsd</span>
+            <span>杂货铺子</span>
           </div>
           <nav class="nav">
             <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">
