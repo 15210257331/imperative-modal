@@ -67,7 +67,6 @@ onUnmounted(() => {
 .svg-container {
   display: flex;
   justify-content: center;
-  margin: 100px auto;
 
   .svg {
     position: relative;

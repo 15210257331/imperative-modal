@@ -14,6 +14,16 @@
               </div>
             </router-link>
           </nav>
+          <div class="action">
+            <el-input
+              v-model="keywords"
+              placeholder="搜索"
+              clearable
+              :prefix-icon="Search"
+              @keyup.enter="search"
+              @clear="clear"
+            />
+          </div>
         </div>
       </header>
       <div class="content">
@@ -26,13 +36,30 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { DialogProvider } from '../packages/dialog'
+import { Search } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
 
 const routes = router.getRoutes()
-// console.log(routes);
+const keywords = ref<string>('')
+
+function search() {
+  const path = route.path
+  router.push({
+    path: path,
+    query: {
+      keywords: keywords.value
+    }
+  })
+}
+function clear() {
+  keywords.value = ''
+  search()
+}
 </script>
 
 <style scoped lang="scss">
@@ -77,6 +104,7 @@ const routes = router.getRoutes()
         height: 100%;
         display: flex;
         align-items: center;
+        flex: 1;
 
         a {
           color: #555;
@@ -93,6 +121,8 @@ const routes = router.getRoutes()
           color: #0da9aeaa;
         }
       }
+      .action {
+      }
     }
   }
 
@@ -102,12 +132,16 @@ const routes = router.getRoutes()
     overflow-x: hidden;
     overflow-y: auto;
     text-align: center;
+    padding-top: 20px;
     .content-body {
       width: 1200px;
       margin: 0 auto;
       padding: 0 10px;
       overflow: hidden;
       text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
     }
   }
 }

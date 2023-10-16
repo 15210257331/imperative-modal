@@ -13,18 +13,18 @@ const routes = [
   },
   {
     path: '/svg',
-    name: 'SVG案例',
+    name: 'SVG',
     component: () => import('../views/SvgCase/index.vue')
   },
   {
     path: '/three',
-    name: 'three.js案例',
+    name: 'three.js',
     component: () => import('../views/ThreejsCase/index.vue')
   },
   {
-    path: '/upload',
-    name: '文件上传',
-    component: () => import('../views/Upload/index.vue')
+    path: '/vue',
+    name: 'vue',
+    component: () => import('../views/VueCase/index.vue')
   }
 ]
 

@@ -6,16 +6,15 @@
 import { ref, markRaw, watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import CaseWrap from '@/components/CaseWrap.vue'
-import Cube from './Cube/index.vue'
-import Cube1 from './Cube1/index.vue'
+import SliceUpload from './SliceUpload/index.vue'
 
 const route = useRoute()
 
 const caseList = ref([
   {
-    title: '旋转立方体',
-    component: markRaw(Cube),
-    path: ['ThreejsCase/Cube/index']
+    title: '大文件切片上传',
+    component: markRaw(SliceUpload),
+    path: ['VueCase/SliceUpload/index']
   }
 ])
 
