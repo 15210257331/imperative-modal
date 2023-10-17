@@ -53,7 +53,7 @@ const container = ref({
   worker: null
 })
 const hashPercentage = ref(0)
-const data = ref([])
+const data = ref<any>([])
 const requestList = ref([])
 const status = ref(Status.wait)
 // 当暂停时会取消 xhr 导致进度条后退
@@ -149,7 +149,7 @@ function calculateHash(fileChunkList) {
     container.worker.postMessage({ fileChunkList })
     container.worker.onmessage = e => {
       const { percentage, hash } = e.data
-      hashPercentage = percentage
+      hashPercentage.value = percentage
       if (hash) {
         resolve(hash)
       }
@@ -165,18 +165,18 @@ function handleFileChange(e) {
 }
 async function handleUpload() {
   if (!container.file) return
-  status = Status.uploading
+  status.value = Status.uploading
   const fileChunkList = createFileChunk(container.file)
   container.hash = await calculateHash(fileChunkList)
 
   const { shouldUpload, uploadedList } = await verifyUpload(container.file.name, container.hash)
   if (!shouldUpload) {
     $message.success('skip upload：file upload success, check /target directory')
-    status = Status.wait
+    status.value = Status.wait
     return
   }
 
-  data = fileChunkList.map(({ file }, index) => ({
+  data.value = fileChunkList.map(({ file }, index) => ({
     fileHash: container.hash,
     index,
     hash: container.hash + '-' + index,
@@ -232,7 +232,7 @@ async function mergeRequest() {
     })
   })
   $message.success('upload success, check /target directory')
-  status = Status.wait
+  status.value = Status.wait
 }
 // 根据 hash 验证文件是否曾经已经被上传过
 // 没有才进行上传

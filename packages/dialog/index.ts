@@ -1,5 +1,5 @@
-import { DialogConfig, DialogOptions } from './types'
+import { DialogOptions } from './types'
 import { useDialog } from './useDialog'
 import DialogProvider from './DialogProvider.vue'
 
-export { type DialogConfig, useDialog, DialogProvider, type DialogOptions }
+export { useDialog, DialogProvider, type DialogOptions }

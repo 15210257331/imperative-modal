@@ -1,14 +1,11 @@
-# vue3-dialog-c
 
-a vue3 dialog component
-
-## Install
+# 安装
 
 ```bash
 npm install vue3-dialog-c
 ```
 
-## 使用方式
+# 使用
 
 1.App.vue
 

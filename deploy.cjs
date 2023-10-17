@@ -47,7 +47,7 @@ inquirer.prompt(question1).then(answer1 => {
       console.log(chalk.green('开始部署'))
       const { username, password } = answer2
       const deployConfig = {
-        projectName: 'vue3-dialog',
+        projectName: 'grocery',
         type: 'docker',
         remoteDirectory: '/root/web',
         host: {
@@ -151,7 +151,7 @@ class App {
         sudo docker rm  ${projectName} || true
         sudo docker rmi  ${projectName} || true
         sudo docker build -t  ${projectName} .
-        sudo docker run -d -p 8888:8888 --name ${projectName} ${projectName}
+        sudo docker run -d -p 8080:8080 --name ${projectName} ${projectName}
         docker ps
         exit
       `

@@ -1,22 +1,23 @@
 <template>
-  <Use />
-  <h2 class="title">组件示例</h2>
-  <CodePreview :comp-name="['dialog/Demo', 'dialog/DemoDialog']">
+  <div class="wrap">
+    <h2 class="title">组件示例</h2>
     <Demo />
-  </CodePreview>
-  <h2 class="title">配置项</h2>
-  <el-table :data="tableData" style="width: 100%" border>
-    <el-table-column prop="arg" label="参数" />
-    <el-table-column prop="des" label="描述" />
-    <el-table-column prop="type" label="类型" />
-    <el-table-column prop="default" label="默认值" />
-  </el-table>
-  <h2 class="title">方法</h2>
-  <el-table :data="tableData2" style="width: 100%" border>
-    <el-table-column prop="name" label="名称" />
-    <el-table-column prop="des" label="描述" />
-    <el-table-column prop="type" label="类型" />
-  </el-table>
+    <Use />
+    <CodePreview :comp-path="['dialog/Demo', 'dialog/DemoDialog']" />
+    <h2 class="title">配置项</h2>
+    <el-table :data="tableData" style="width: 100%" border>
+      <el-table-column prop="arg" label="参数" />
+      <el-table-column prop="des" label="描述" />
+      <el-table-column prop="type" label="类型" />
+      <el-table-column prop="default" label="默认值" />
+    </el-table>
+    <h2 class="title">方法</h2>
+    <el-table :data="tableData2" style="width: 100%" border>
+      <el-table-column prop="name" label="名称" />
+      <el-table-column prop="des" label="描述" />
+      <el-table-column prop="type" label="类型" />
+    </el-table>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -66,8 +67,14 @@ const tableData2 = [
 </script>
 
 <style lang="scss" scoped>
+
+.wrap {
+  width: 100%;
+  background-color:white;
+  padding: 0 16px;
+}
 .title {
   margin-top: 20px;
-  margin-bottom:10px;
+  margin-bottom: 10px;
 }
 </style>

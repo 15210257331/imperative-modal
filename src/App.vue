@@ -3,7 +3,7 @@
     <div class="app-container">
       <header class="header">
         <div class="header-content">
-          <div class="logo">
+          <div class="logo" @click="handleClick">
             <img src="./assets/logo.webp" alt="" />
             <span>杂货铺子</span>
           </div>
@@ -16,6 +16,7 @@
           </nav>
           <div class="action">
             <el-input
+              style="--el-input-border-radius: 15px; width: 210px"
               v-model="keywords"
               placeholder="搜索"
               clearable
@@ -59,6 +60,12 @@ function search() {
 function clear() {
   keywords.value = ''
   search()
+}
+
+function handleClick() {
+  router.push({
+    path: '/'
+  })
 }
 </script>
 
@@ -133,6 +140,7 @@ function clear() {
     overflow-y: auto;
     text-align: center;
     padding-top: 20px;
+    background-color: #f8f8f8;
     .content-body {
       width: 1200px;
       margin: 0 auto;

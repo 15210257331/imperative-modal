@@ -6,8 +6,8 @@
         viewBox="0 0 1024 1024"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
-        width="28"
-        height="28"
+        width="20"
+        height="20"
         @click="handleClick"
       >
         <path d="M438.4 849.1l222.7-646.7c0.2-0.5 0.3-1.1 0.4-1.6L438.4 849.1z" opacity=".224" p-id="8247"></path>
@@ -20,11 +20,9 @@
       <component :is="data.component" v-bind="data.props"></component>
     </div>
     <el-dialog v-model="dialogVisible" title="代码展示" width="70%" append-to-body>
-      <CodePreview :comp-name="data.path"> </CodePreview>
+      <CodePreview :comp-path="data.path"> </CodePreview>
       <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogVisible = false">关闭</el-button>
-        </span>
+        <el-button @click="dialogVisible = false">关闭</el-button>
       </template>
     </el-dialog>
   </div>
@@ -57,33 +55,33 @@ function handleClick() {
 .case-wrap {
   height: auto;
   margin: 0 20px 20px 0;
-  padding: 12px;
   display: inline-block;
   cursor: pointer;
-  border-radius: 6px;
-  border: 1px solid #ededed;
+  border-radius: 3px;
+  border: 1px solid rgb(239, 239, 245);
   background-color: white;
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease-out;
   &:hover {
-    box-shadow: 0 0 6px #ccc;
+    box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.08), 0 3px 6px 0 rgba(0, 0, 0, 0.06), 0 5px 12px 4px rgba(0, 0, 0, 0.04);
   }
   .header {
+    width: 100%;
+    padding: 16px 20px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 100%;
-    height: 35px;
-    margin-bottom: 10px;
+    border-bottom: 1px solid rgb(239, 239, 245);
     .title {
       flex: 1;
       text-align: left;
-      font-size: 23px;
+      font-size: 17px;
       font-weight: 500;
       color: #0da9aeaa;
     }
   }
   .content {
     min-width: 320px;
+    padding: 20px 24px;
   }
 }
 </style>

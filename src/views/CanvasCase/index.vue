@@ -6,15 +6,15 @@
 import { ref, markRaw, watch, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import CaseWrap from '@/components/CaseWrap.vue'
-import SliceUpload from './SliceUpload/index.vue'
+import Clock from './Clock/index.vue'
 
 const route = useRoute()
 
 const caseList = ref([
   {
-    title: '大文件切片上传',
-    component: markRaw(SliceUpload),
-    path: ['VueCase/SliceUpload/index']
+    title: 'canvas钟表',
+    component: markRaw(Clock),
+    path: ['CanvasCase/Clock/index']
   }
 ])
 

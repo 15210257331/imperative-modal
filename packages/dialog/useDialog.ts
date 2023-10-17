@@ -1,6 +1,6 @@
 import { inject, type Component, computed } from 'vue'
 import { useMouse } from '@vueuse/core'
-import { DialogConfig, DialogOptions, InjectionKey } from './types'
+import { DialogOptions, InjectionKey } from './types'
 
 export function useDialog() {
   const { x, y } = useMouse()
