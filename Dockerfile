@@ -8,4 +8,4 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY dist /usr/share/nginx/html
 
 # 暴露端口
-EXPOSE 8888
+EXPOSE 8080

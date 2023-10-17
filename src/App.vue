@@ -3,16 +3,32 @@
     <div class="app-container">
       <header class="header">
         <div class="header-content">
-          <img class="logo" src="./assets/vue.svg" alt="" />
+          <div class="logo" @click="handleClick">
+            <img src="./assets/logo.webp" alt="" />
+            <span>杂货铺子</span>
+          </div>
           <nav class="nav">
-            <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">{{
-              item.name
-            }}</router-link>
+            <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">
+              <div class="list-item">
+                <p>{{ item.name }}</p>
+              </div>
+            </router-link>
           </nav>
+          <div class="action">
+            <el-input
+              style="--el-input-border-radius: 15px; width: 210px"
+              v-model="keywords"
+              placeholder="搜索"
+              clearable
+              :prefix-icon="Search"
+              @keyup.enter="search"
+              @clear="clear"
+            />
+          </div>
         </div>
       </header>
-      <div class="body">
-        <div class="body-content">
+      <div class="content">
+        <div class="content-body">
           <router-view></router-view>
         </div>
       </div>
@@ -21,13 +37,36 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { DialogProvider } from '../packages/dialog'
+import { Search } from '@element-plus/icons-vue'
+import { ref } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
 
 const routes = router.getRoutes()
-// console.log(routes);
+const keywords = ref<string>('')
+
+function search() {
+  const path = route.path
+  router.push({
+    path: path,
+    query: {
+      keywords: keywords.value
+    }
+  })
+}
+function clear() {
+  keywords.value = ''
+  search()
+}
+
+function handleClick() {
+  router.push({
+    path: '/'
+  })
+}
 </script>
 
 <style scoped lang="scss">
@@ -44,19 +83,27 @@ const routes = router.getRoutes()
     box-sizing: border-box;
     min-height: 65px;
     border-bottom: 1px solid rgba(60, 60, 67, 0.12);
-
-    &-content {
+    .header-content {
+      width: 1200px;
       height: 100%;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      width: 1200px;
-
       .logo {
-        width: 42px;
-        height: 42px;
-        margin-left: 30px;
+        display: flex;
+        align-items: center;
+        img {
+          width: 45px;
+          height: 45px;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+        span {
+          font-size: 20px;
+          font-weight: 600;
+          margin-left: 15px;
+        }
       }
 
       .nav {
@@ -64,6 +111,7 @@ const routes = router.getRoutes()
         height: 100%;
         display: flex;
         align-items: center;
+        flex: 1;
 
         a {
           color: #555;
@@ -80,20 +128,28 @@ const routes = router.getRoutes()
           color: #0da9aeaa;
         }
       }
+      .action {
+      }
     }
   }
 
-  .body {
+  .content {
     width: 100%;
-    box-sizing: border-box;
     flex: 1;
-    overflow: auto;
-    padding: 20px;
-
-    .body-content {
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    padding-top: 20px;
+    background-color: #f8f8f8;
+    .content-body {
       width: 1200px;
       margin: 0 auto;
+      padding: 0 10px;
       overflow: hidden;
+      text-align: left;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
     }
   }
 }

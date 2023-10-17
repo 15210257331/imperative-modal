@@ -10,6 +10,7 @@ const libCss = () => ({
       viteConfig = resolvedConfig;
     },
 
+    // 生成bundle时调用
     writeBundle (option, bundle) {
       if (!viteConfig.build || !viteConfig.build.lib) {
         // only for lib build

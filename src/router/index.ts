@@ -3,23 +3,32 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: '使用文档',
-    component: () => import('../doc/guide/index.md')
+    redirect: '/dialog'
   },
   {
     path: '/dialog',
     name: '弹窗组件',
-    component: () => import('../doc/dialog/index.vue')
+    component: () => import('../views/Dialog/index.vue')
   },
   {
-    path: '/code',
-    name: '图片验证码',
-    component: () => import('../doc/verify/index.vue')
+    path: '/vue',
+    name: 'vue',
+    component: () => import('../views/VueCase/index.vue')
   },
   {
-    path: '/test',
-    name: '测试组件',
-    component: () => import('../doc/test/index.vue')
+    path: '/canvas',
+    name: 'canvas',
+    component: () => import('../views/CanvasCase/index.vue')
+  },
+  {
+    path: '/svg',
+    name: 'SVG',
+    component: () => import('../views/SvgCase/index.vue')
+  },
+  {
+    path: '/three',
+    name: 'three.js',
+    component: () => import('../views/ThreejsCase/index.vue')
   }
 ]
 
