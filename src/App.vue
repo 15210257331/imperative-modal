@@ -1,7 +1,7 @@
 <template>
   <DialogProvider>
     <div class="app-container">
-      <header class="header">
+      <header v-if="showHeader" class="header">
         <div class="header-content">
           <div class="logo" @click="handleClick">
             <img src="./assets/logo.webp" alt="" />
@@ -47,6 +47,7 @@ const route = useRoute()
 
 const routes = router.getRoutes()
 const keywords = ref<string>('')
+const showHeader = ref<boolean>(true)
 
 function search() {
   const path = route.path
@@ -144,7 +145,6 @@ function handleClick() {
     .content-body {
       width: 1200px;
       margin: 0 auto;
-      padding: 0 10px;
       overflow: hidden;
       text-align: left;
       display: flex;
