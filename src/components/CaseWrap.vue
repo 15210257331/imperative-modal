@@ -54,7 +54,7 @@ function handleClick() {
 <style lang="scss" scoped>
 .case-wrap {
   height: auto;
-  margin: 0 20px 20px 0;
+  margin: 10px;
   display: inline-block;
   cursor: pointer;
   border-radius: 3px;
@@ -62,7 +62,8 @@ function handleClick() {
   background-color: white;
   transition: all 0.3s ease-out;
   &:hover {
-    box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.08), 0 3px 6px 0 rgba(0, 0, 0, 0.06), 0 5px 12px 4px rgba(0, 0, 0, 0.04);
+    // box-shadow: 0 1px 2px -2px rgba(0, 0, 0, 0.08), 0 3px 6px 0 rgba(0, 0, 0, 0.06), 0 5px 12px 4px rgba(0, 0, 0, 0.04);
+    box-shadow: rgba(24, 36, 51, 0.16) 0 2px 16px 0;
   }
   .header {
     width: 100%;

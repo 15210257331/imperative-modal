@@ -29,7 +29,12 @@
       </header>
       <div class="content">
         <div class="content-body">
-          <router-view></router-view>
+          <Suspense>
+            <router-view />
+            <template #fallback>
+              <h1 style="color: red; font-size: 40px">加载中......</h1>
+            </template>
+          </Suspense>
         </div>
       </div>
     </div>
@@ -114,19 +119,25 @@ function handleClick() {
         align-items: center;
         flex: 1;
 
-        a {
+        .list-item {
           color: #555;
           font-weight: 600;
           margin: 0 15px;
           cursor: pointer;
+          border-radius: 40px;
+          padding: 6px 16px;
 
           &:hover {
             color: #0da9aeaa;
+            background-color: #92909013;
           }
         }
 
         .active {
-          color: #0da9aeaa;
+          .list-item {
+            color: #0da9aeaa;
+            background-color: #92909013;
+          }
         }
       }
       .action {
