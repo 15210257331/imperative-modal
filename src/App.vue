@@ -5,7 +5,7 @@
         <div class="header-content">
           <div class="logo" @click="handleClick">
             <img src="./assets/logo.webp" alt="" />
-            <span>杂货铺子</span>
+            <span>Grocery</span>
           </div>
           <nav class="nav">
             <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">
@@ -50,7 +50,8 @@ import { ref } from 'vue'
 const router = useRouter()
 const route = useRoute()
 
-const routes = router.getRoutes()
+const routes = router.getRoutes().filter(item => item.meta.show)
+console.log(router.getRoutes())
 const keywords = ref<string>('')
 const showHeader = ref<boolean>(true)
 

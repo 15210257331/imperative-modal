@@ -1,13 +1,15 @@
 <template>
-  <div class="container" id="scene"></div>
+  <div class="attackLine" id="attackLine"></div>
 </template>
 
 <script setup lang="ts">
 import * as THREE from 'three'
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer'
 import { onMounted, ref } from 'vue'
+import * as TWEEN from '@tweenjs/tween.js'
 
-let scene, camera, renderer, controls
+let scene, camera, renderer, renderer2d, controls
 
 // 圆环网格对象组
 const circleYs = []
@@ -20,12 +22,43 @@ onMounted(() => {
   initCamera()
   initAxesHelper()
   initLight()
-  createGround()
+  // createGround()
   initRenderer()
   initControls()
   createBox()
   const line = lineConnect([100, 0, 100], [200, 0, 200])
   scene.add(line)
+
+  // 绑定点击事件
+  renderer2d.domElement.addEventListener(
+    'click',
+    function (event) {
+      const px = event.offsetX
+      const py = event.offsetY
+      //屏幕坐标px、py转WebGL标准设备坐标x、y
+      //width、height表示canvas画布宽高度
+      const x = (px / 1000) * 2 - 1
+      const y = -(py / 600) * 2 + 1
+      //创建一个射线投射器`Raycaster`
+      const raycaster = new THREE.Raycaster()
+      //.setFromCamera()计算射线投射器`Raycaster`的射线属性.ray
+      // 形象点说就是在点击位置创建一条射线，射线穿过的模型代表选中
+      raycaster.setFromCamera(new THREE.Vector2(x, y), camera)
+      //.intersectObjects([mesh1, mesh2, mesh3])对参数中的网格模型对象进行射线交叉计算
+      // 未选中对象返回空数组[],选中一个对象，数组1个元素，选中两个对象，数组两个元素
+      const intersects = raycaster.intersectObjects(scene.children)
+      // intersects.length大于0说明，说明选中了模型
+      if (intersects.length > 0) {
+        // 选中模型的第一个模型，设置为红色
+        // const object = intersects[0].object
+        // console.log(object)
+        // object.material.color.set(0xffaaaa)
+        // var tween = new TWEEN.Tween(object.rotation).to({ x: Math.PI * 2, y: Math.PI * 2 }, 1000).start()
+      }
+    },
+    false
+  )
+
   render()
 })
 
@@ -63,12 +96,20 @@ function initRenderer() {
   const width = 1000 //宽度
   const height = 600 //高度
   renderer.setSize(width, height) //设置three.js渲染区域的尺寸(像素px)
-  document.getElementById('scene')?.appendChild(renderer.domElement)
+  document.getElementById('attackLine')?.appendChild(renderer.domElement)
   renderer.shadowMap.enable = true // 加载阴影
+
+  renderer2d = new CSS2DRenderer()
+  renderer2d.setSize(width, height)
+  renderer2d.domElement.style.position = 'absolute'
+  renderer2d.domElement.style.top = '0px'
+  renderer2d.domElement.tabIndex = 0
+  renderer2d.domElement.className = 'coreInnerRenderer2d'
+  document.getElementById('attackLine')?.appendChild(renderer2d.domElement)
 }
 // 设置相机控件轨道控制器OrbitControls
 function initControls() {
-  controls = new OrbitControls(camera, renderer.domElement)
+  controls = new OrbitControls(camera, renderer2d.domElement)
   // 如果OrbitControls改变了相机参数，重新调用渲染器渲染三维场景
   controls.addEventListener('change', function () {
     // renderer.render(scene, camera); //执行渲染操作
@@ -80,11 +121,13 @@ function createBox() {
   const material = new THREE.MeshBasicMaterial({
     color: 0xffcc44,
     transparent: false, //开启透明
-    opacity: 1 //设置透明度
+    opacity: 1, //设置透明度
+    wireframe: true
   })
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
       const mesh = new THREE.Mesh(geometry, material)
+      mesh.name = 'zhangsan' + i
       mesh.position.x = 50 * i - 200
       mesh.position.y = 10
       mesh.position.z = 50 * j - 200
@@ -92,6 +135,7 @@ function createBox() {
     }
   }
 }
+
 
 // 创建地面
 function createGround() {
@@ -109,6 +153,18 @@ function createGround() {
   scene.add(grid)
 }
 
+// 创建标签
+function createTag(name: string) {
+  var div = document.createElement('div')
+  div.innerHTML = name
+  div.classList.add('tag')
+  //div元素包装为CSS2模型对象CSS2DObject
+  var label = new CSS2DObject(div)
+  div.style.pointerEvents = 'none' //避免HTML标签遮挡三维场景的鼠标事件
+  // 设置HTML元素标签在three.js世界坐标中位置
+  label.position.set(50, 60, 50)
+  scene.add(label)
+}
 /**
  * 两点之间绘制三维贝塞尔曲线
  * */
@@ -207,8 +263,14 @@ function render() {
     item.position.set(tankPosition.x, tankPosition.y, tankPosition.z)
   })
   renderer.render(scene, camera)
+  renderer2d.render(scene, camera)
+  TWEEN.update()
   requestAnimationFrame(render)
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.attackLine {
+  position: relative;
+}
+</style>
