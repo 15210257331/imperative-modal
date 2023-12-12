@@ -8,8 +8,11 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer'
 import { onMounted, ref } from 'vue'
 import * as TWEEN from '@tweenjs/tween.js'
+import demoTexture from './demo.png'
 
 let scene, camera, renderer, renderer2d, controls
+
+let z = 0
 
 // 圆环网格对象组
 const circleYs = []
@@ -117,25 +120,30 @@ function initControls() {
 }
 // 创建立方体
 function createBox() {
-  const geometry = new THREE.BoxGeometry(20, 20, 20)
-  const material = new THREE.MeshBasicMaterial({
-    color: 0xffcc44,
-    transparent: false, //开启透明
-    opacity: 1, //设置透明度
-    wireframe: true
+  const texLoader = new THREE.TextureLoader()
+  const texture = texLoader.load(demoTexture)
+  const material = new THREE.MeshLambertMaterial({
+    // 设置纹理贴图：Texture对象作为材质map属性的属性值
+    map: texture //map表示材质的颜色贴图属性
   })
+  const geometry = new THREE.BoxGeometry(20, 20, 20)
+  // const material = new THREE.MeshBasicMaterial({
+  //   color: 0xffcc44,
+  //   transparent: false, //开启透明
+  //   opacity: 1, //设置透明度
+  //   wireframe: true
+  // })
   for (let i = 0; i < 10; i++) {
-    for (let j = 0; j < 10; j++) {
+    for (let j = 0; j < 100; j++) {
       const mesh = new THREE.Mesh(geometry, material)
       mesh.name = 'zhangsan' + i
       mesh.position.x = 50 * i - 200
       mesh.position.y = 10
-      mesh.position.z = 50 * j - 200
+      mesh.position.z = -50 * j + 200
       scene.add(mesh)
     }
   }
 }
-
 
 // 创建地面
 function createGround() {
@@ -265,6 +273,7 @@ function render() {
   renderer.render(scene, camera)
   renderer2d.render(scene, camera)
   TWEEN.update()
+  camera.position.z -= 1;//相机直线运动动画
   requestAnimationFrame(render)
 }
 </script>

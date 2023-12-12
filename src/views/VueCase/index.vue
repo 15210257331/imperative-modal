@@ -6,8 +6,14 @@
 import { ref, markRaw, watch, computed, onMounted } from 'vue'
 import CaseList from '@/components/CaseList.vue'
 import SliceUpload from './SliceUpload/index.vue'
+import GradientBorder from './GradientBorder/index.vue'
 
 const caseList = ref([
+  {
+    title: '渐变边框',
+    component: markRaw(GradientBorder),
+    path: ['VueCase/GradientBorder/index']
+  },
   {
     title: '大文件切片上传',
     component: markRaw(SliceUpload),

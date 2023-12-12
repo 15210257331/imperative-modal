@@ -1,4 +1,10 @@
 <template>
+  <div class="demo">
+    <div>
+      <div>asdfasdf</div>
+    </div>
+  </div>
+  <div class="text">this is a small dog</div>
   <CaseList :data="caseList" />
 </template>
 
@@ -33,4 +39,42 @@ const caseList = ref([
 ])
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.demo {
+  width: 400px;
+  height: 200px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  border: 1px solid black;
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: inline-block;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(4, 16, 30, 1), rgba(4, 16, 30, 0));
+  }
+  & > div {
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    div {
+      width: 800px;
+      height: 200px;
+      background-color: #fff000;
+    }
+  }
+}
+.text {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 500;
+  background: linear-gradient(180deg, #fff 36.46%, #9ac1f0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+</style>

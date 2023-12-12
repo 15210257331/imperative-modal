@@ -15,8 +15,11 @@ echarts.registerMap('world', WorldJSON)
 echarts.registerMap('china', ChinaJSON)
 const map = ref()
 
+let earthOption: any = {}
+let myChart: any
+
 onMounted(() => {
-  let myChart = echarts.init(map.value)
+  myChart = echarts.init(map.value)
   let geoCoordMap: any = {
     海门: [121.15, 31.89],
     鄂尔多斯: [109.781327, 39.608266],
@@ -265,10 +268,10 @@ onMounted(() => {
             opacity: 0.7
           },
           label: {
-            show: true,
+            show: true
           },
           labelLine: {
-            show: true,
+            show: true
           },
           data: [
             [105.18, 37.51],
@@ -363,7 +366,7 @@ onMounted(() => {
   }
 
   function drawEarth() {
-    let option: any = {
+    earthOption = {
       tooltip: {
         show: true
       },
@@ -371,7 +374,8 @@ onMounted(() => {
         silent: true,
         shading: 'color',
         environment: '#000',
-        baseTexture: baseTexture,
+        globeRadius: 60,
+        baseTexture: baseTexture
         // layers: [
         //   {
         //     show: false,
@@ -406,24 +410,11 @@ onMounted(() => {
       ]
     }
     for (let i = 0; i < 10; i++) {
-      option.series[0].data = option.series[0].data.concat(rodamData())
+      earthOption.series[0].data = earthOption.series[0].data.concat(rodamData())
     }
     myChart.clear()
-    myChart.setOption(option, true)
-  }
-
-  function rodamData() {
-    let longitude = 87.617733
-    let longitude2 = Math.random() * 360 - 180
-    let latitude = 43.792818
-    let latitude2 = Math.random() * 180 - 90
-    return {
-      coords: [
-        [longitude2, latitude2],
-        [longitude, latitude]
-      ],
-      value: (Math.random() * 3000).toFixed(2)
-    }
+    myChart.setOption(earthOption, true)
+    requestData()
   }
 
   function convertData(data: any) {
@@ -442,6 +433,34 @@ onMounted(() => {
 
   getBaseTexture()
 })
+
+function rodamData() {
+  let longitude = 87.617733
+  let longitude2 = Math.random() * 360 - 180
+  let latitude = 43.792818
+  let latitude2 = Math.random() * 180 - 90
+  return {
+    coords: [
+      [longitude2, latitude2],
+      [longitude, latitude]
+    ],
+    value: (Math.random() * 3000).toFixed(2)
+  }
+}
+
+// 模拟数据刷新
+function requestData() {
+  setInterval(() => {
+    let arr = []
+    for (let i = 0; i < 1000; i++) {
+      arr.push(rodamData())
+    }
+    earthOption.series[0].data = arr
+    console.log(earthOption)
+    myChart.clear()
+    myChart.setOption(earthOption, true)
+  }, 1000 * 5)
+}
 </script>
 
 <style scoped>

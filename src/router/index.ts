@@ -33,7 +33,7 @@ const routes = [
     path: '/echarts',
     name: 'echarts',
     meta: {
-      show: false
+      show: true
     },
     component: () => import('../views/EchartsCase/index.vue')
   },
