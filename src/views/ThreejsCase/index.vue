@@ -1,10 +1,10 @@
 <template>
-  <div class="demo">
+  <!-- <div class="demo">
     <div>
       <div>asdfasdf</div>
     </div>
   </div>
-  <div class="text">this is a small dog</div>
+  <div class="text">this is a small dog</div> -->
   <CaseList :data="caseList" />
 </template>
 
@@ -16,11 +16,11 @@ import Earth from './Earth/index.vue'
 import Demo from './Demo/index.vue'
 import ChinaMap from './ChinaMap/index.vue'
 const caseList = ref([
-  {
-    title: '3D中国地图',
-    component: markRaw(ChinaMap),
-    path: ['ThreejsCase/ChinaMap/index']
-  },
+  // {
+  //   title: '3D中国地图',
+  //   component: markRaw(ChinaMap),
+  //   path: ['ThreejsCase/ChinaMap/index']
+  // },
   {
     title: '3D文字',
     component: markRaw(Demo),
@@ -32,7 +32,7 @@ const caseList = ref([
     path: ['ThreejsCase/AttackLine/index']
   },
   {
-    title: '打击线地球',
+    title: '',
     component: markRaw(Earth),
     path: ['ThreejsCase/Earth/index']
   }

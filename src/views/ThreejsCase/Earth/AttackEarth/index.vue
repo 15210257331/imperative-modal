@@ -14,6 +14,7 @@ import { createRipple, rippleAnimate } from './ripple'
 import { createEarthGroup } from './earthGroup'
 import { attackLine } from './attackLine'
 import { createLabel } from './label'
+import { createEllipse } from './ellipse'
 
 interface Props {
   width: number
@@ -54,11 +55,17 @@ async function init() {
   object3D.add(...pointArr)
   // object3D.add(...labelArr)
   circleArray = circleArr
+
+  // 椭圆
+  const { ellipseArr } = createEllipse(props.radius, props.cityList)
+  object3D.add(...ellipseArr)
+
   // 攻击线
   const { flyManager, group } = attackLine(props.radius, props.lineList, props.cityList)
   object3D.add(group)
   manager = flyManager
   scene.add(object3D)
+  console.log(object3D)
 
   // autoRotateEarth()
 

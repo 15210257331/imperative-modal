@@ -105,7 +105,26 @@ onMounted(() => {
         },
         data: [],
         silent: true
-      }
+      },
+      {
+          name: 'bar3D',
+          type: 'bar3D',
+          coordinateSystem: 'geo3D',
+          barSize: 0.5, //柱子粗细
+          shading: 'lambert',
+          opacity: 1,
+          minHeight: 0.2,
+          maxHeight: 1,
+          bevelSize: 0.5,
+          label: {
+            show: false,
+            formatter: '{b}'
+          },
+          data: [
+            [87.505603, 43.982546, 100],
+            [114.502461, 38.045474, 122]
+          ]
+        }
     ]
   }
   // for (let i = 0; i < 10; i++) {

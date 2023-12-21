@@ -3,14 +3,14 @@
 </template>
 
 <script setup lang="ts">
-import AttackEarth from '@/components/AttackEarth/index.vue'
+import AttackEarth from './AttackEarth/index.vue'
 import { onMounted, ref } from 'vue'
 
 const lineList = [
   {
     from: '北京',
     to: '悉尼',
-    color: `rgba(255, 147, 0, 1)`
+    color: `rgba(25, 147, 0, 1)`
   },
   {
     from: '伦敦',

@@ -53,7 +53,7 @@ const route = useRoute()
 const routes = router.getRoutes().filter(item => item.meta.show)
 console.log(router.getRoutes())
 const keywords = ref<string>('')
-const showHeader = ref<boolean>(true)
+const showHeader = ref<boolean>(false)
 
 function search() {
   const path = route.path
