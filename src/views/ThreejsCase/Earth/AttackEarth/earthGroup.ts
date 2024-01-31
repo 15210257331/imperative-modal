@@ -8,7 +8,8 @@ import {
   LineBasicMaterial,
   LineLoop,
   Group,
-  Color
+  Color,
+  MeshBasicMaterial,
 } from 'three'
 // import { createEarthCloudImageMesh } from "./cloud";
 import { earthGlow } from './glow'

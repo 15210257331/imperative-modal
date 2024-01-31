@@ -13,6 +13,9 @@ import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { Line2 } from 'three/examples/jsm/lines/Line2'
 import { InitFlyLine } from '../Earth/AttackEarth/tools/flyLine'
 import pointPng from '../Earth/AttackEarth/img/point.png'
+import FlyLine from './FlyLine'
+import TWEEN from '@tweenjs/tween.js'
+
 const demoRef = ref<HTMLElement>()
 
 var scene: any,
@@ -33,9 +36,11 @@ function init() {
   initRenderer()
   initControls()
   initAxesHelper()
-  ripple()
-  line2Ellipse()
-  shaderEllipse()
+  // ripple()
+  // line2Ellipse()
+  // shaderEllipse()
+  // createFlyLine()
+  
   animate()
 }
 // 场景
@@ -270,10 +275,21 @@ function shaderEllipse() {
   scene.add(flyMesh)
 }
 
+function createFlyLine() {
+  const data = [
+    { begin: [0, 0], end: [10, 0], height: 10 },
+    { begin: [0, 0], end: [-20, 0], height: 10 },
+    { begin: [0, 0], end: [15, 15], height: 10 }
+  ]
+  const flyLine = new FlyLine(scene, data)
+  scene.add(flyLine.ThreeGroup)
+  flyLine.draw()
+}
+
 // 渲染循环
 function animate() {
   requestAnimationFrame(animate)
-  material.uniforms['time'].value += 0.02
+  // material.uniforms['time'].value += 0.02
   if (manager != null) {
     manager.animation()
   }

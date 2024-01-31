@@ -73,7 +73,7 @@ class App {
       await this.executeCommand('npm run build', '前端代码build')
       await this.executeCommand('tar -zcvf assets.tar.gz Dockerfile nginx.conf dist', '前端资源打包')
       await this.uploadProjectFile()
-      await this.creatImage()
+      await this.createImage()
       await this.removeFile('assets.tar.gz')
     } catch (err) {
       console.log(chalk.red(err))
@@ -134,7 +134,7 @@ class App {
   }
 
   // 构建镜像
-  creatImage() {
+  createImage() {
     const projectName = this.config.projectName
     const shell = `
         cd /root/web
@@ -151,7 +151,7 @@ class App {
         sudo docker rm  ${projectName} || true
         sudo docker rmi  ${projectName} || true
         sudo docker build -t  ${projectName} .
-        sudo docker run -d -p 8080:8080 --name ${projectName} ${projectName}
+        sudo docker run -d -p 8080:80 --name ${projectName} ${projectName}
         docker ps
         exit
       `

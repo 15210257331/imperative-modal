@@ -1,10 +1,4 @@
 <template>
-  <!-- <div class="demo">
-    <div>
-      <div>asdfasdf</div>
-    </div>
-  </div>
-  <div class="text">this is a small dog</div> -->
   <CaseList :data="caseList" />
 </template>
 
@@ -16,13 +10,13 @@ import Earth from './Earth/index.vue'
 import Demo from './Demo/index.vue'
 import ChinaMap from './ChinaMap/index.vue'
 const caseList = ref([
-  // {
-  //   title: '3D中国地图',
-  //   component: markRaw(ChinaMap),
-  //   path: ['ThreejsCase/ChinaMap/index']
-  // },
   {
-    title: '3D文字',
+    title: '3D中国地图',
+    component: markRaw(ChinaMap),
+    path: ['ThreejsCase/ChinaMap/index']
+  },
+  {
+    title: '案例',
     component: markRaw(Demo),
     path: ['ThreejsCase/Demo/index']
   },
