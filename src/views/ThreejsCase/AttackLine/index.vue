@@ -246,8 +246,10 @@ function spotCircle(spot) {
 function moveSpot(curve) {
   // 线上的移动物体
   const aGeo = new THREE.SphereGeometry(4, 4, 4)
+  aGeo.scale(1, 1.5, 2); // 调整球体的比例，使其更加椭圆
   const aMater = new THREE.MeshPhongMaterial({ color: 0xff0000, side: THREE.DoubleSide })
   const aMesh = new THREE.Mesh(aGeo, aMater)
+  
   // 保存曲线实例
   aMesh.curve = curve
   aMesh._s = 0

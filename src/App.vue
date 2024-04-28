@@ -53,7 +53,7 @@ const route = useRoute()
 const routes = router.getRoutes().filter(item => item.meta.show)
 console.log(router.getRoutes())
 const keywords = ref<string>('')
-const showHeader = ref<boolean>(false)
+const showHeader = ref<boolean>(true)
 
 function search() {
   const path = route.path
@@ -83,6 +83,8 @@ function handleClick() {
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-image: url('./assets/image/main_bg.jpg');
+  background-size: cover;
 
   .header {
     height: 65px;
@@ -90,6 +92,8 @@ function handleClick() {
     box-sizing: border-box;
     min-height: 65px;
     border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    opacity: 0.8;
+    background-color: white;
     .header-content {
       width: 1200px;
       height: 100%;
@@ -125,8 +129,8 @@ function handleClick() {
           font-weight: 600;
           margin: 0 15px;
           cursor: pointer;
-          border-radius: 40px;
-          padding: 6px 16px;
+          border-radius: 15px;
+          padding: 4px 12px;
 
           &:hover {
             color: #0da9aeaa;
@@ -153,10 +157,11 @@ function handleClick() {
     overflow-y: auto;
     text-align: center;
     padding-top: 20px;
-    background-color: #f8f8f8;
+    // background-color: #f8f8f8;
+    // background: linear-gradient(to bottom right, #ff7e5f, #feb47b); /* 对角线渐变 */
+
     .content-body {
-      width: 1200px;
-      margin: 0 auto;
+      margin: 0 60px;
       overflow: hidden;
       text-align: left;
       display: flex;

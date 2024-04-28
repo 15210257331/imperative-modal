@@ -47,11 +47,19 @@ const routes = [
   },
   {
     path: '/three',
-    name: 'three.js',
+    name: 'three',
     meta: {
       show: true
     },
     component: () => import('../views/ThreejsCase/index.vue')
+  },
+  {
+    path: '/cesium',
+    name: 'cesium',
+    meta: {
+      show: true
+    },
+    component: () => import('../views/CesiumCase/index.vue')
   }
 ]
 
