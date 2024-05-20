@@ -15,11 +15,11 @@ const caseList = ref([
     component: markRaw(ChinaMap),
     path: ['ThreejsCase/ChinaMap/index']
   },
-  {
-    title: '案例',
-    component: markRaw(Demo),
-    path: ['ThreejsCase/Demo/index']
-  },
+  // {
+  //   title: '案例',
+  //   component: markRaw(Demo),
+  //   path: ['ThreejsCase/Demo/index']
+  // },
   {
     title: '打击线阵列',
     component: markRaw(AttackLine),

@@ -3,6 +3,7 @@ import TWEEN from '@tweenjs/tween.js'
 
 interface OptionInterface {
   position: Array<number>
+  normal?: boolean // 是否垂直于和圆点的连接线
   color?: string // 颜色
   width?: number // 整体宽高/直径
   segments?: number // 细分数
@@ -17,39 +18,51 @@ interface OptionInterface {
  * 使用着色器创建的涟漪
  */
 export default class ShaderRippleManager {
-  data: Array<any>
-  group: THREE.Group
-  constructor(data: Array<OptionInterface>) {
-    this.data = data
-    this.group = new THREE.Group()
+  rippleGroup: THREE.Group
+  constructor() {
+    this.rippleGroup = new THREE.Group()
   }
 
-  createRipple() {
-    this.data.map((item: OptionInterface) => {
-      const { position, color, width, segments, opacity, range, speed, seg } = item
-      const geometry = new THREE.PlaneBufferGeometry(width || 8, width || 8, segments || 8, segments || 8)
-      const material = new THREE.ShaderMaterial({
-        uniforms: {
-          uColor: { value: new THREE.Color(color || '#ff91c2') },
-          uOpacity: { value: opacity || 1 },
-          uRange: { value: range || 0.5 }, // 圆环的宽度
-          uSpeed: { value: speed || 0.3 }, // 扩散的速度
-          uSge: { value: seg || 3 }, // 圆环个数
-          uRadius: { value: (width || 8) / 2 },
-          time: { value: 0 }
-        },
-        // opacity:0.5,
-        transparent: true,
-        side: THREE.DoubleSide,
-        // 顶点着色器
-        vertexShader: `  
+  addRipples(dataList: Array<any>) {
+    const ripples = dataList.map((item: OptionInterface) => this.createRipple(item))
+    this.rippleGroup.add(...ripples)
+  }
+
+  removeAll() {
+    this.rippleGroup.children.forEach((item: any) => {
+      if (item.type === 'Mesh') {
+        this.rippleGroup.remove(item)
+        item.geometry.dispose() // 释放几何体的内存
+        item.material.dispose() // 释放材质的内存
+      }
+    })
+  }
+
+  createRipple(data: OptionInterface) {
+    const { position, normal, color, width, segments, opacity, range, speed, seg } = data
+    const geometry = new THREE.PlaneBufferGeometry(width || 6, width || 6, segments || 8, segments || 8)
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        uColor: { value: new THREE.Color(color || '#ff91c2') },
+        uOpacity: { value: opacity || 1 },
+        uRange: { value: range || 0.6 }, // 圆环的宽度
+        uSpeed: { value: speed || 0.3 }, // 扩散的速度
+        uSge: { value: seg || 3 }, // 圆环个数
+        uRadius: { value: (width || 6) / 2 },
+        time: { value: 0 }
+      },
+      // opacity:0.5,
+      transparent: true,
+      side: THREE.DoubleSide,
+      // 顶点着色器
+      vertexShader: `  
           varying vec2 vUv;
           void main() { 
               vUv = uv;
               gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
           }`,
-        // 片元着色器
-        fragmentShader: `
+      // 片元着色器
+      fragmentShader: `
           varying vec2 vUv;
           // 下面是传进来的变量
           uniform vec3 uColor;
@@ -98,25 +111,25 @@ export default class ShaderRippleManager {
               
               gl_FragColor = vec4(uColor, uOpacity * opacity);
           }` // 片元着色器
-      })
-      const mesh = new THREE.Mesh(geometry, material)
-      mesh.position.set(position[0], position[1], position[2])
+    })
+    const mesh = new THREE.Mesh(geometry, material)
+    mesh.position.set(position[0], position[1], position[2])
+    if (normal && normal === true) {
       // 球面法线方向(球心和球面坐标构成的方向向量)
       var coordVec3 = new THREE.Vector3(position[0], position[1], position[2]).normalize()
       // mesh默认在XOY平面上，法线方向沿着z轴
       var meshNormal = new THREE.Vector3(0, 0, 1)
       mesh.quaternion.setFromUnitVectors(meshNormal, coordVec3)
-      this.group.add(mesh)
-      let tween = new TWEEN.Tween({ index: 0 })
-        .to({ index: 10 }, 10000)
-        .onUpdate(function (t) {
-          let time = Math.ceil(t.index)
-          material.uniforms.time.value += 0.01
-        })
-        .repeat(Infinity)
-      tween.start()
-    })
-    return this.group
+    }
+    let tween = new TWEEN.Tween({ index: 0 })
+      .to({ index: 10 }, 10000)
+      .onUpdate(function (t) {
+        let time = Math.ceil(t.index)
+        material.uniforms.time.value += 0.01
+      })
+      .repeat(Infinity)
+    tween.start()
+    return mesh
   }
 
   animate() {

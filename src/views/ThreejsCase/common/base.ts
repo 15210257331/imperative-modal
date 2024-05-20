@@ -1,22 +1,21 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer'
 
 // 初始化场景
-export const initScene = (): THREE.Scene => {
+export const initScene = (bg: THREE.Color | string): THREE.Scene => {
   const scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x000000)
+  scene.background = new THREE.Color(bg)
   return scene
 }
 // 初始化相机 30:视场角度, width / height:Canvas画布宽高比, 1:近裁截面, 10000：远裁截面
 export const initCamera = (width: number, height: number) => {
-  const camera = new THREE.PerspectiveCamera(30, 1000 / 600, 1, 10000)
-  camera.position.set(400, 400, 800)
-  camera.lookAt(0, 0, 0)
+  const camera = new THREE.PerspectiveCamera(30, width / height, 0.01, 100000)
   return camera
 }
 // 辅助观察的坐标系
-export const initAxesHelper = () => {
-  return new THREE.AxesHelper(300)
+export const initAxesHelper = (length: number = 500) => {
+  return new THREE.AxesHelper(length)
 }
 // 灯光
 export const initLight = () => {
@@ -38,10 +37,23 @@ export const initRenderer = (width: number, height: number, el: HTMLElement | un
   return renderer
 }
 
+export const initRender2D = (width: number, height: number, el: HTMLElement | undefined) => {
+  const renderer2d = new CSS2DRenderer()
+  renderer2d.setSize(width, height)
+  renderer2d.domElement.style.pointerEvents = 'none';
+  renderer2d.domElement.style.position = 'absolute'
+  renderer2d.domElement.style.top = '0px'
+  renderer2d.domElement.tabIndex = 0
+  renderer2d.domElement.className = 'innerRenderer2d'
+  el?.appendChild(renderer2d.domElement)
+  return renderer2d
+}
+
 //  初始化轨道控制器
 export const initControls = (scene: THREE.Scene, camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer) => {
   const controls = new OrbitControls(camera, renderer.domElement)
   controls.addEventListener('change', function () {
     renderer.render(scene, camera) //执行渲染操作
   })
+  return controls
 }

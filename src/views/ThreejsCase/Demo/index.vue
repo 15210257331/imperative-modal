@@ -7,7 +7,7 @@ import { onMounted, ref } from 'vue'
 import * as THREE from 'three'
 import { InitFlyLine } from '../Earth/AttackEarth/tools/flyLine'
 import pointPng from '../Earth/AttackEarth/img/point.png'
-import FlyLine1 from '../common/flyLine1'
+import FlyLine1 from '../common/flyLineManager'
 import FlyLine3 from '../common/flyLine3'
 import TWEEN from '@tweenjs/tween.js'
 import { initScene, initCamera, initAxesHelper, initLight, initRenderer, initControls } from '../common/base'
@@ -23,9 +23,15 @@ var manager: any = null
 const width = 1000
 const height = 700
 
+const shaderRippleManager = new ShaderRippleManager()
+
 onMounted(() => {
-  scene = initScene()
+  scene = initScene('#000000')
+
   camera = initCamera(width, height)
+  camera.position.set(400, 400, 800)
+  camera.lookAt(0, 0, 0)
+
   renderer = initRenderer(width, height, demoRef.value)
 
   initControls(scene, camera, renderer)
@@ -67,9 +73,9 @@ function createRipple() {
       width: 50
     }
   ]
-  const shaderRippleManager = new ShaderRippleManager(data)
-  shaderRippleManager.createRipple()
-  scene.add(shaderRippleManager.group)
+
+  shaderRippleManager.addRipples(data)
+  scene.add(shaderRippleManager.rippleGroup)
 }
 
 // 着色器椭圆打击线
@@ -105,13 +111,13 @@ function shaderEllipse() {
 
 function createFlyLine1() {
   const data = [
-    { begin: [0, 0], end: [80, 30], height: 30 },
-    { begin: [0, 0], end: [-20, 0], height: 10 },
-    { begin: [0, 0], end: [15, 15], height: 10 }
+    { from: [0, 0, 0], to: [80, 30, 0], height: 30 },
+    { from: [0, 0, 0], to: [-20, 0, 0], height: 10 },
+    { from: [0, 0, 0], to: [15, 15, 0], height: 10 }
   ]
   const flyLine = new FlyLine1(data)
-  scene.add(flyLine.ThreeGroup)
-  flyLine.draw()
+  const lineGroup = flyLine.drawLine()
+  scene.add(lineGroup)
 }
 
 function createFlyLine3() {

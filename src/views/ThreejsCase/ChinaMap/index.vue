@@ -4,47 +4,85 @@
 
 <script setup lang="ts">
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as D3 from 'd3'
-import { ref, onMounted } from 'vue'
-
-import bg from '@/assets/image/bg.png'
-
+import { CSS2DObject, CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+import io from 'socket.io-client'
+import ShaderRippleManager from '../common/shaderRipple'
+import FlyLineManager from '../common/flyLineManager'
+import {
+  initScene,
+  initCamera,
+  initAxesHelper,
+  initLight,
+  initRenderer,
+  initRender2D,
+  initControls
+} from '../common/base'
 //引入世界地图的JSON数据
 import WorldJSON from '@/assets/json/world.json'
 import ChinaJSON from '@/assets/json/china.json'
+import HebeiJSON from '@/assets/json/hebei.json'
 
+const socket = io('ws://localhost:4000')
+const messages = ref<any>([])
+// 监听消息事件
+socket.on('notification', message => {
+  console.log('推送的数据', message)
+  messages.value.push(message)
+  createRipple(message)
+  createFlyLine1(message)
+  createTag(message)
+})
+
+const chinaMap = ref<HTMLElement>()
+var scene: THREE.Scene
+var camera: any
+var render: any
+var render2D: any
+var controls: any
 const width = 1200
 const height = 800
+// d3投影转换函数
+const handleProj = D3.geoMercator().center([0, 0]).translate([0, 0])
+// 存储地图Object3D对象
+const mapContainer = new THREE.Object3D()
+// 上次选中的省份
+const lastPickedProvince = ref(null)
 
-const chinaMap = ref()
-const scene = new THREE.Scene() //场景
-const camera = new THREE.PerspectiveCamera() //摄像机（透视投影）
-const render = new THREE.WebGLRenderer() //渲染器
-const controls = new OrbitControls(camera, render.domElement) //创建控件对象
-
-const handleProj = D3.geoMercator().center([50, 34.5]).scale(25).translate([0, 0]) // d3投影转换函数
-const mapContainer = new THREE.Object3D() // 存储地图Object3D对象
-const lastPickedProvince = ref(null) // 上次选中的省份
+const rippleManager = new ShaderRippleManager()
+const flyLineManager = new FlyLineManager()
 
 onMounted(() => {
-  initScene()
-  initLight()
-  initAxesHelper()
-
-  initGeom({
-    json: WorldJSON,
-    color: '#00ff00',
-    height: 3
-  })
-  initGeom({
-    json: ChinaJSON,
-    color: '#00ffff',
-    height: 4
-  })
+  init()
   renderScene()
+  createExtrudeMap(WorldJSON, '#4964FD', 12)
   bindEvent()
 })
+
+onBeforeUnmount(() => {
+  socket.close()
+})
+
+function init() {
+  scene = initScene('#000000')
+
+  camera = initCamera(width, height)
+  camera.position.set(60, -400, 1200)
+  camera.lookAt(0, 0, 0)
+
+  render = initRenderer(width, height, chinaMap.value)
+  render2D = initRender2D(width, height, chinaMap.value)
+
+  controls = initControls(scene, camera, render)
+
+  const { hemiLight, dirLight } = initLight()
+  scene.add(hemiLight, dirLight)
+
+  const axesHelper = initAxesHelper()
+  scene.add(axesHelper)
+}
+
 function bindEvent() {
   window.addEventListener(
     'mousemove',
@@ -82,66 +120,65 @@ function bindEvent() {
   )
 }
 
-// 初始化场景
-function initScene() {
-  render.setSize(width, height) // 渲染器设置尺寸
-  // 设置背景颜色
-  render.setClearColor(new THREE.Color(0x000000)) // 设置背景颜色和透明度
-  render.shadowMap.enabled = true // 渲染器允许渲染阴影⭐
-  chinaMap.value?.appendChild(render.domElement)
-  /**
-   * 设置摄像机的属性
-   */
-  camera.aspect = width / height // 摄像机设置屏幕宽高比
-  camera.fov = 45 // 摄像机的视角
-  camera.near = 0.01 // 近面距离
-  camera.far = 1001 // 远面距离
-  camera.position.set(2, 2, 200) // 设置摄像机在threejs坐标系中的位置
-  camera.lookAt(0, 0, 0) // 摄像机的指向
-  camera.updateProjectionMatrix() // 更新摄像机投影矩阵,在任何参数被改变以后必须被调用
+function createRipple(data: any[]) {
+  const result: any[] = []
+  data.forEach(item => {
+    const [from_x, from_y] = handleProj(item.from)
+    result.push({
+      position: [from_x, -from_y, 15],
+      color: '#ff0000',
+      width: 20,
+      ...item
+    })
+    const [to_x, to_y] = handleProj(item.to)
+    result.push({
+      position: [to_x, -to_y, 15],
+      color: '#fff000',
+      width: 20,
+      ...item
+    })
+  })
+  rippleManager.removeAll()
+  rippleManager.addRipples(result)
+  scene.add(rippleManager.rippleGroup)
 }
 
-// 初始化环境光
-function initLight() {
-  // 半球环境光 天空的反光颜色,地面的反光颜色,光的强度
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 3)
-  hemiLight.position.set(500, 500, 300)
-  scene.add(hemiLight)
-  // 平行光
-  const dirLight = new THREE.DirectionalLight()
-  dirLight.position.set(300, 300, 300)
-  scene.add(dirLight)
+function createFlyLine1(data: any[]) {
+  const result = data.map(item => {
+    const [from_x, from_y] = handleProj(item.from)
+    const [to_x, to_y] = handleProj(item.to)
+    return {
+      ...item,
+      from: [from_x, -from_y, 15],
+      to: [to_x, -to_y, 15],
+      height: 40
+    }
+  })
+  flyLineManager.removeAll()
+  flyLineManager.addLines(result)
+  scene.add(flyLineManager.lineGroup)
 }
 
-// 辅助观察的坐标系
-function initAxesHelper() {
-  const axesHelper = new THREE.AxesHelper(300)
-  scene.add(axesHelper)
-}
-
-// 创建世界地图
-function initGeom({ json, color, height }) {
-  const feaureList = json.features
-  feaureList.forEach(feature => {
-    // 每个feature都代表一个省份
+function createExtrudeMap(json: any, color: string, height: number) {
+  const featureList = json.features
+  featureList.forEach((feature: any) => {
     const province = new THREE.Object3D()
-    province.properties = feature.properties.name // 省份名称
     province.name = feature.properties.name // 省份名称
     const coordinates = feature.geometry.coordinates // 省份坐标信息
     if (feature.geometry.type === 'MultiPolygon') {
-      coordinates.forEach(coord => {
-        coord.forEach(coordinate => {
-          const group = creatDepthPolygon(coordinate, color, height)
-          // extrudeMesh.properties = feature.properties.name
-          province.add(group)
+      coordinates.forEach((coord: any) => {
+        coord.forEach((coordinate: any) => {
+          const group = createDepthPolygon(coordinate, color, height)
+          const line = createOutLine(coordinate, color, height)
+          province.add(group, line)
         })
       })
     }
     if (feature.geometry.type === 'Polygon') {
-      coordinates.forEach(coordinate => {
-        const group = creatDepthPolygon(coordinate, color, height)
-        // extrudeMesh.properties = feature.properties.name
-        province.add(group)
+      coordinates.forEach((coordinate: any) => {
+        const group = createDepthPolygon(coordinate, color, height)
+        const line = createOutLine(coordinate, color, height)
+        province.add(group, line)
       })
     }
     mapContainer.add(province)
@@ -149,53 +186,61 @@ function initGeom({ json, color, height }) {
   scene.add(mapContainer)
 }
 
-// 创建三维多边形
-function creatDepthPolygon(coordinate, color, height) {
+function createDepthPolygon(coordinate: any, color: string, height: number) {
   const shape = new THREE.Shape()
-  coordinate.forEach((item, index) => {
-    // 每一个item都是MultiPolygon中的一个polygon
-    const [x_XYZ, y_XYZ] = handleProj(item)
+  coordinate.forEach((item: any, index: number) => {
+    const [x, y] = handleProj(item)
     if (index === 0) {
-      shape.moveTo(x_XYZ, -y_XYZ)
+      shape.moveTo(x, -y)
     } else {
-      shape.lineTo(x_XYZ, -y_XYZ)
+      shape.lineTo(x, -y)
     }
   })
-  // 拉伸几何体
   const geometry = new THREE.ExtrudeBufferGeometry(shape, { depth: height, bevelEnabled: false })
-
-  const textureLoader = new THREE.TextureLoader()
-  var texture = textureLoader.load(bg) //加载纹理贴图
-  //  用于表面的材质
   const material1 = new THREE.MeshBasicMaterial({
-    map: texture
+    color: new THREE.Color('#43ad7f')
   })
-  // 用户拉伸截面的材质
   const material2 = new THREE.MeshBasicMaterial({
-    color: new THREE.Color(color), // 每个省随机赋色
+    color: new THREE.Color('#BBCBFE'), // 每个省随机赋色
     transparent: false,
     opacity: 0.9
   })
   const extrudeMesh = new THREE.Mesh(geometry, [material1, material2])
-
-  // 边界
-  const edgesGeometry = new THREE.EdgesGeometry(geometry)
-  const lineMaterial = new THREE.LineBasicMaterial({ color: color })
-  const wireframe = new THREE.LineSegments(edgesGeometry, lineMaterial)
-  wireframe.renderOrder = 1 // 设置渲染顺序，确保边缘线在表面上方绘制
-
   var group = new THREE.Group()
   group.add(extrudeMesh)
-  group.add(wireframe)
-
   return group
 }
 
-// 渲染器执行渲染
+function createOutLine(coordinate: any, color: string, height: number) {
+  const points: any[] = []
+  coordinate.forEach((item: any) => {
+    const [x, y] = handleProj(item)
+    points.push(new THREE.Vector3(x, -y, 0))
+  })
+  const lineGeometry = new THREE.BufferGeometry().setFromPoints(points)
+  const lineMaterial = new THREE.LineBasicMaterial({ color: 0xffffff })
+  const line = new THREE.Line(lineGeometry, lineMaterial)
+  line.position.z = height + 0.3
+  return line
+}
+
+function createTag(data: any[]) {
+  const result: any[] = []
+  data.map(item => {
+    var div = document.getElementById('alarm-tooltip')
+    sData.value = item.fromName
+    var label = new CSS2DObject(div)
+    const [from_x, from_y] = handleProj(item.from)
+    label.position.set(from_x, -from_y, 50)
+    result.push(label)
+  })
+  scene.add(...result)
+}
+
 function renderScene() {
   window.requestAnimationFrame(() => renderScene())
-  controls.update()
   render.render(scene, camera)
+  render2D.render(scene, camera)
 }
 </script>
 
@@ -204,4 +249,5 @@ function renderScene() {
   width: 1200px;
   height: 800px;
 }
+
 </style>
