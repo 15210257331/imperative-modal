@@ -28,7 +28,7 @@
     "packages/**/*.ts",
     "packages/**/*.tsx",
     "packages/**/*.vue"
-  ],
+, "src/views/VueCase/SliceUpload1/hash-worker.js", "src/views/VueCase/SliceUpload1/worker-build.js"  ],
   "references": [
     {
       "path": "./tsconfig.node.json"
