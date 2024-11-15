@@ -70,7 +70,7 @@ class App {
   async deploy() {
     try {
       chalk.green('开始部署。。。')
-      await this.executeCommand('npm run build', '前端代码build')
+      await this.executeCommand('npm run build:doc', '前端代码build')
       await this.executeCommand('tar -zcvf assets.tar.gz Dockerfile nginx.conf dist', '前端静态资源打包')
       await this.uploadProjectFile()
       await this.createImage()
@@ -147,7 +147,7 @@ class App {
         sudo docker rm  ${appName} || true
         sudo docker rmi  ${appName} || true
         sudo docker build -t  ${appName} .
-        sudo docker run -d -p 80:80 --name ${appName} ${appName}
+        sudo docker run -d -p 8080:80 --name ${appName} ${appName}
         docker ps
         exit
       `
