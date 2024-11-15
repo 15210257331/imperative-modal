@@ -1,15 +1,15 @@
 {
-  "name": "grocery",
-  "version": "0.0.11",
+  "name": "imperative-modal",
+  "version": "1.0.1",
   "type": "module",
-  "main": "lib/vue3-dialog.cjs.js",
-  "module": "lib/vue3-dialog.es.js",
+  "main": "lib/imperative-modal.cjs.js",
+  "module": "lib/imperative-modal.es.js",
   "types": "lib/types/index.d.ts",
   "exports": {
-    "./lib/style.css": "./lib/style.css",
+    "./lib/index.css": "./lib/index.css",
     ".": {
-      "import": "./lib/vue3-dialog.es.js",
-      "require": "./lib/vue3-dialog.cjs.js"
+      "import": "./lib/imperative-modal.es.js",
+      "require": "./lib/imperative-modal.cjs.js"
     }
   },
   "files": [
@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --build tsconfig.lib.json && vite build --config vite.config.ts && node ./build/copyDemo.js",
+    "build:doc": "vue-tsc --build tsconfig.lib.json && vite build --config vite.config.ts && node ./build/copyDemo.js",
     "build:lib": "vite build --config vite.config.lib.ts && vue-tsc --build tsconfig.lib.json",
     "release": "release-it",
     "preview": "vite preview",
@@ -27,8 +27,8 @@
   },
   "keywords": [
     "vue3",
-    "vue3-dialog",
-    "vue3 弹窗组件"
+    "vue3-modal",
+    "vue3命令式模态框"
   ],
   "license": "MIT",
   "repository": {
@@ -49,7 +49,7 @@
     "element-plus": "^2.3.1",
     "express": "^4.19.2",
     "fs-extra": "^11.2.0",
-    "handy-helper": "^1.5.0",
+    "handy-helper": "^1.8.0",
     "highlight.js": "^11.7.0",
     "multiparty": "^4.2.3",
     "sass": "^1.59.3",
@@ -66,7 +66,6 @@
     "@release-it/conventional-changelog": "^5.1.1",
     "@vitejs/plugin-vue": "^4.1.0",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
-    "cesium": "^1.116.0",
     "chalk": "^4.1.2",
     "inquirer": "^8.2.5",
     "prettier": "^2.8.7",
@@ -74,7 +73,6 @@
     "ssh2": "^1.11.0",
     "typescript": "^4.9.3",
     "vite": "^4.2.0",
-    "vite-plugin-cesium": "^1.2.22",
     "vite-plugin-md": "^0.22.5",
     "vue-tsc": "^1.2.0"
   }

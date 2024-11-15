@@ -1,24 +1,22 @@
+# 使用方式
 
-# 安装
+1.安装
 
 ```bash
-npm install vue3-dialog-c
+npm install imperative-modal
 ```
 
-# 使用
-
-1.App.vue
+2.在项目根组件配置 provider
 
 ```vue
-<!--App.vue -->
 <script setup lang="ts">
-import { RouterView } from "vue-router";
-import { DialogProvider } from "vue3-dialog-c";
+import { RouterView } from 'vue-router'
+import { ModalProvider } from 'imperative-modal'
 </script>
 
 <template>
-  <DialogProvider>
+  <ModalProvider>
     <RouterView />
-  </DialogProvider>
+  </ModalProvider>
 </template>
 ```

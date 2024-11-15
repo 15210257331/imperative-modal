@@ -1,21 +1,17 @@
 import { h, defineComponent } from 'vue'
 
 export default defineComponent({
-    name: 'Success',
-    render() {
-        return (
-            <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                <g
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                >
-                    <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-                    <path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"></path>
-                </g>
-            </svg>
-        )
-    }
+  name: 'Success',
+  render() {
+    return (
+      <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4256" width="26" height="26">
+        <path d="M512 512m-448 0a448 448 0 1 0 896 0 448 448 0 1 0-896 0Z" fill="#07C160" p-id="4257"></path>
+        <path
+          d="M466.7 679.8c-8.5 0-16.6-3.4-22.6-9.4l-181-181.1c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l158.4 158.5 249-249c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3L489.3 670.4c-6 6-14.1 9.4-22.6 9.4z"
+          fill="#FFFFFF"
+          p-id="4258"
+        ></path>
+      </svg>
+    )
+  }
 })

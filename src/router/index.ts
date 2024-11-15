@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    redirect: '/vue'
+    redirect: '/dialog'
   },
   {
     path: '/dialog',
@@ -12,54 +12,6 @@ const routes = [
       show: true
     },
     component: () => import('../views/Dialog/index.vue')
-  },
-  {
-    path: '/vue',
-    name: 'vue',
-    meta: {
-      show: true
-    },
-    component: () => import('../views/VueCase/index.vue')
-  },
-  {
-    path: '/canvas',
-    name: 'canvas',
-    meta: {
-      show: true
-    },
-    component: () => import('../views/CanvasCase/index.vue')
-  },
-  {
-    path: '/echarts',
-    name: 'echarts',
-    meta: {
-      show: true
-    },
-    component: () => import('../views/EchartsCase/index.vue')
-  },
-  {
-    path: '/svg',
-    name: 'SVG',
-    meta: {
-      show: true
-    },
-    component: () => import('../views/SvgCase/index.vue')
-  },
-  {
-    path: '/three',
-    name: 'three',
-    meta: {
-      show: true
-    },
-    component: () => import('../views/ThreejsCase/index.vue')
-  },
-  {
-    path: '/cesium',
-    name: 'cesium',
-    meta: {
-      show: true
-    },
-    component: () => import('../views/CesiumCase/index.vue')
   }
 ]
 

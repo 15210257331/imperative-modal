@@ -22,7 +22,6 @@ const resultCaseList = computed(() => {
   return props.data
 })
 
-
 onMounted(() => {
   // const select_modules = import.meta.globEager('./**/*.vue')
   // Object.keys(select_modules).map(key => {

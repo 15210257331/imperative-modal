@@ -6,21 +6,36 @@ const fs = require('fs')
 const inquirer = require('inquirer')
 const chalk = require('chalk')
 
+const environments = [
+  {
+    name: '测试环境1:129.211.164.125', // 环境名称
+    appName: 'grocery', // 应用名称
+    mode: 'docker',
+    target: '/root/web',
+    host: '129.211.164.125', // 服务器 host
+    port: 22 // 服务器 port
+  },
+  {
+    name: '测试环境2:140.143.168.25',
+    appName: 'grocery', // 应用名称
+    mode: 'docker',
+    target: '/root/web',
+    host: '140.143.168.25', // 服务器 host
+    port: 22 // 服务器 port
+  }
+]
+
 const question1 = [
   {
     type: 'list',
     message: '请选择发布环境',
-    name: 'env',
-    choices: [
-      {
-        name: '本地环境:localhost',
-        value: '本地环境'
-      },
-      {
-        name: '正式环境:129.211.164.125',
-        value: '正式环境'
+    name: 'environment',
+    choices: environments.map(item => {
+      return {
+        name: item.name,
+        value: item.name
       }
-    ]
+    })
   }
 ]
 
@@ -38,31 +53,15 @@ const question2 = [
   }
 ]
 
-inquirer.prompt(question1).then(answer1 => {
-  const { env } = answer1
-  if (env === '本地环境') {
-    console.log(chalk.green('敬请期待,开发中'))
-  } else {
-    inquirer.prompt(question2).then(answer2 => {
-      console.log(chalk.green('开始部署'))
-      const { username, password } = answer2
-      const deployConfig = {
-        projectName: 'grocery',
-        type: 'docker',
-        remoteDirectory: '/root/web',
-        host: {
-          host: '129.211.164.125', // 服务器 host
-          port: 22, // 服务器 port
-          username: username, // 服务器用户名
-          password: password // 服务器密码
-        }
-      }
-      const app = new App(deployConfig)
-      app.deploy()
-    })
-  }
-})
+const start = async () => {
+  const { environment } = await inquirer.prompt(question1)
+  const { username, password } = await inquirer.prompt(question2)
+  const config = environments.find(item => item.name === environment)
+  const app = new App({ ...config, username, password })
+  app.deploy()
+}
 
+start()
 class App {
   constructor(config) {
     this.config = config
@@ -70,8 +69,9 @@ class App {
 
   async deploy() {
     try {
+      chalk.green('开始部署。。。')
       await this.executeCommand('npm run build', '前端代码build')
-      await this.executeCommand('tar -zcvf assets.tar.gz Dockerfile nginx.conf dist', '前端资源打包')
+      await this.executeCommand('tar -zcvf assets.tar.gz Dockerfile nginx.conf dist', '前端静态资源打包')
       await this.uploadProjectFile()
       await this.createImage()
       await this.removeFile('assets.tar.gz')
@@ -108,6 +108,7 @@ class App {
 
   // 上传文件到服务器
   uploadProjectFile() {
+    const { target, host, port, username, password } = this.config
     return new Promise((resolve, reject) => {
       ssh2Client
         .on('ready', () => {
@@ -115,43 +116,38 @@ class App {
             if (err) {
               reject(err)
             }
-            sftp.fastPut(
-              './assets.tar.gz',
-              path.join(this.config.remoteDirectory, 'assets.tar.gz'),
-              {},
-              (error, result) => {
-                if (error) {
-                  reject(error)
-                }
-                console.log(chalk.green('前端资源上传服务器完成!'))
-                resolve(true)
+            sftp.fastPut('./assets.tar.gz', path.join(target, 'assets.tar.gz'), {}, (error, result) => {
+              if (error) {
+                reject(error)
               }
-            )
+              console.log(chalk.green('前端资源上传服务器完成!'))
+              resolve(true)
+            })
           })
         })
-        .connect(this.config.host)
+        .connect({ host, port, username, password })
     })
   }
 
   // 构建镜像
   createImage() {
-    const projectName = this.config.projectName
+    const { appName } = this.config
     const shell = `
         cd /root/web
-        if [ ! -d ${projectName}  ];then
-          mkdir ${projectName}
+        if [ ! -d ${appName}  ];then
+          mkdir ${appName}
         else
-          rm -rf ./${projectName}/*
+          rm -rf ./${appName}/*
         fi
-        tar -zxvf assets.tar.gz -C ./${projectName}
+        tar -zxvf assets.tar.gz -C ./${appName}
         rm -rf assets.tar.gz
         ls
-        cd ${projectName}
-        sudo docker stop ${projectName} || true
-        sudo docker rm  ${projectName} || true
-        sudo docker rmi  ${projectName} || true
-        sudo docker build -t  ${projectName} .
-        sudo docker run -d -p 8080:80 --name ${projectName} ${projectName}
+        cd ${appName}
+        sudo docker stop ${appName} || true
+        sudo docker rm  ${appName} || true
+        sudo docker rmi  ${appName} || true
+        sudo docker build -t  ${appName} .
+        sudo docker run -d -p 80:80 --name ${appName} ${appName}
         docker ps
         exit
       `

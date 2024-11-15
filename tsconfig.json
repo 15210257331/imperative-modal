@@ -9,16 +9,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "noImplicitAny": false, // 是否在表达式和声明上有隐含的any类型时报错
+    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "declaration": true,
     "baseUrl": ".",
     "paths": {
-      "@/*":["src/*"] // 标识匹配 src 下的所有文件
-    },
+      "@/*": ["src/*"] // 标识匹配 src 下的所有文件
+    }
   },
   "include": [
     "src/**/*.ts",
@@ -27,8 +25,8 @@
     "src/**/*.vue",
     "packages/**/*.ts",
     "packages/**/*.tsx",
-    "packages/**/*.vue"
-, "src/views/VueCase/SliceUpload1/hash-worker.js", "src/views/VueCase/SliceUpload1/worker-build.js"  ],
+    "packages/**/*.vue",
+  ],
   "references": [
     {
       "path": "./tsconfig.node.json"

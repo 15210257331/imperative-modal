@@ -1,4 +1,4 @@
-import  copyDir from 'copy-dir'
+import copyDir from 'copy-dir'
 /** 将src/views 目录复制到 dist/views的目录下 */
 copyDir.sync(
   process.cwd() + '/src/views/',

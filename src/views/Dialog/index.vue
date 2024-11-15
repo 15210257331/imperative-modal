@@ -1,8 +1,7 @@
 <template>
   <div class="wrap">
-    <h2 class="title">组件示例</h2>
-    <Demo />
     <Use />
+    <Demo />
     <CodePreview :comp-path="['dialog/Demo', 'dialog/DemoDialog']" />
     <h2 class="title">配置项</h2>
     <el-table :data="tableData" style="width: 100%" border>
@@ -54,25 +53,44 @@ const tableData = [
 
 const tableData2 = [
   {
-    name: 'open',
+    name: 'create',
     des: '打开一个弹窗, component: 弹窗组件,config: 配置项',
-    type: '(component:Component, config: any) => Promise<any>'
+    type: '(config: any) => Promise<any>'
   },
   {
-    name: 'close',
+    name: 'destroy',
     des: '关闭一个弹窗',
     type: '(data:any) => void'
+  },
+  {
+    name: 'success',
+    des: '打开success确认提示弹窗',
+    type: '(config: any) => Promise<any>'
+  },
+  {
+    name: 'info',
+    des: '打开info确认提示弹窗',
+    type: '(config: any) => Promise<any>'
+  },
+  {
+    name: 'warning',
+    des: '打开warning确认提示弹窗',
+    type: '(config: any) => Promise<any>'
+  },
+  {
+    name: 'error',
+    des: '打开error确认提示弹窗',
+    type: '(config: any) => Promise<any>'
   }
 ]
 </script>
 
 <style lang="scss" scoped>
-
 .wrap {
   width: 100%;
-  background-color:white;
-  padding: 0 16px;
+  background-color: white;
 }
+
 .title {
   margin-top: 20px;
   margin-bottom: 10px;

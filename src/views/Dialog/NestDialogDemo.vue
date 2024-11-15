@@ -10,10 +10,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useDialog } from '../../../packages/dialog'
+import { useModal } from '../../../packages/modal'
 import { onBeforeUnmount, onMounted } from 'vue'
 
-const { close } = useDialog()
+const { destroy } = useModal()
 
 const props = defineProps({
   id: {
@@ -29,11 +29,11 @@ onBeforeUnmount(() => {
 })
 
 function confirm() {
-  close('这是传出的数据')
+  destroy('这是传出的数据')
 }
 
 function cancel() {
-  close()
+  destroy()
 }
 </script>
 

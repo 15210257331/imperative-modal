@@ -20,11 +20,11 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { useDialog } from '../../../packages/dialog'
+import { useModal } from '../../../packages/modal'
 import NestDialogDemo from './NestDialogDemo.vue'
 import { onBeforeUnmount, onMounted } from 'vue'
 
-const { create, close } = useDialog()
+const { create, destroy } = useModal()
 
 const props = defineProps({
   id: {
@@ -52,13 +52,13 @@ function showDialog() {
 function confirm() {
   new Promise((resolve, reject) => {
     setTimeout(() => {
-      close('这是传出的数据')
+      destroy('这是传出的数据')
     }, 1000)
   })
 }
 
 function cancel() {
-  close()
+  destroy()
 }
 </script>
 

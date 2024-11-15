@@ -1,16 +1,22 @@
 <template>
-  <el-button type="primary" @click="showDialog">打开一个弹窗</el-button>
-  <el-button type="primary" @click="showInfo">打开一个确认框</el-button>
+  <div style="margin-bottom: 20px">
+    <h2 class="title">组件示例</h2>
+    <el-button type="primary" @click="showDefaultModal">打开一个弹窗</el-button>
+    <el-button type="success" @click="showConfirmModal('success')">打开一个success提示框</el-button>
+    <el-button type="info" @click="showConfirmModal('info')">打开一个info提示框</el-button>
+    <el-button type="warning" @click="showConfirmModal('warning')">打开一个warning提示框</el-button>
+    <el-button type="danger" @click="showConfirmModal('error')">打开一个error提示框</el-button>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ElMessage } from 'element-plus'
 import DemoDialog from './DemoDialog.vue'
-import { useDialog, type DialogOptions } from '../../../packages/dialog'
+import { useModal, type ModalOptions } from '../../../packages/modal'
 
-const dialog = useDialog()
+const modal = useModal()
 
-const options: DialogOptions = {
+const options: ModalOptions = {
   component: DemoDialog,
   mask: true,
   title: '这是一个弹窗的标题',
@@ -20,12 +26,21 @@ const options: DialogOptions = {
   }
 }
 
-function showInfo() {
-  dialog.info(options).then(res => {})
+function showConfirmModal(type: string) {
+  modal[type]({
+    title: '提醒',
+    content: '这里是提醒的内容?'
+  })
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 }
 
-function showDialog() {
-  dialog
+function showDefaultModal() {
+  modal
     .create(options)
     .then(res => {
       console.log(res)

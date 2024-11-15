@@ -1,49 +1,19 @@
 <template>
-  <DialogProvider>
+  <ModalProvider>
     <div class="app-container">
-      <header v-if="showHeader" class="header">
-        <div class="header-content">
-          <div class="logo" @click="handleClick">
-            <img src="./assets/logo.webp" alt="" />
-            <span>Grocery</span>
-          </div>
-          <nav class="nav">
-            <router-link v-for="item in routes" :key="item.path" active-class="active" :to="item.path">
-              <div class="list-item">
-                <p>{{ item.name }}</p>
-              </div>
-            </router-link>
-          </nav>
-          <div class="action">
-            <el-input
-              style="--el-input-border-radius: 15px; width: 210px"
-              v-model="keywords"
-              placeholder="搜索"
-              clearable
-              :prefix-icon="Search"
-              @keyup.enter="search"
-              @clear="clear"
-            />
-          </div>
+      <header class="header">vue3 命令式模态框</header>
+      <section class="content">
+        <div class="content_body">
+          <router-view />
         </div>
-      </header>
-      <div class="content">
-        <div class="content-body">
-          <Suspense>
-            <router-view />
-            <template #fallback>
-              <h1 style="color: red; font-size: 40px">加载中......</h1>
-            </template>
-          </Suspense>
-        </div>
-      </div>
+      </section>
     </div>
-  </DialogProvider>
+  </ModalProvider>
 </template>
 
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router'
-import { DialogProvider } from '../packages/dialog'
+import { ModalProvider } from '../packages/modal'
 import { Search } from '@element-plus/icons-vue'
 import { ref } from 'vue'
 
@@ -82,72 +52,18 @@ function handleClick() {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  background-image: url('./assets/image/main_bg.jpg');
-  background-size: cover;
 
   .header {
-    height: 65px;
+    height: 120px;
+    line-height: 120px;
+    font-size: 28px;
+    font-weight: 700;
     width: 100%;
     box-sizing: border-box;
-    min-height: 65px;
-    border-bottom: 1px solid rgba(60, 60, 67, 0.12);
+    padding: 0 200px;
     opacity: 0.8;
-    background-color: white;
-    .header-content {
-      width: 1200px;
-      height: 100%;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      .logo {
-        display: flex;
-        align-items: center;
-        img {
-          width: 45px;
-          height: 45px;
-          border-radius: 50%;
-          cursor: pointer;
-        }
-        span {
-          font-size: 20px;
-          font-weight: 600;
-          margin-left: 15px;
-        }
-      }
-
-      .nav {
-        margin-left: 70px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        flex: 1;
-
-        .list-item {
-          color: #555;
-          font-weight: 600;
-          margin: 0 15px;
-          cursor: pointer;
-          border-radius: 15px;
-          padding: 4px 12px;
-
-          &:hover {
-            color: #0da9aeaa;
-            background-color: #92909013;
-          }
-        }
-
-        .active {
-          .list-item {
-            color: #0da9aeaa;
-            background-color: #92909013;
-          }
-        }
-      }
-      .action {
-      }
-    }
+    background: url('./assets/image/header-bg.jpg') no-repeat;
+    background-size: 900px;
   }
 
   .content {
@@ -155,19 +71,14 @@ function handleClick() {
     flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
-    text-align: center;
     padding-top: 20px;
+
+    .content_body {
+      margin: 0 200px;
+    }
+
     // background-color: #f8f8f8;
     // background: linear-gradient(to bottom right, #ff7e5f, #feb47b); /* 对角线渐变 */
-
-    .content-body {
-      margin: 0 60px;
-      overflow: hidden;
-      text-align: left;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-start;
-    }
   }
 }
 </style>

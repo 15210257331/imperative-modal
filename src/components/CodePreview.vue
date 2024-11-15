@@ -64,7 +64,7 @@ onMounted(() => {
   border: 1px solid #ebebeb;
   border-radius: 3px;
   overflow: auto;
-  max-height: 500px;
+  // max-height: 500px;
   .code-source {
     margin: 0;
     padding-bottom: 0;
