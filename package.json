@@ -4,7 +4,7 @@
   "type": "module",
   "main": "lib/imperative-modal.cjs.js",
   "module": "lib/imperative-modal.es.js",
-  "types": "lib/types/index.d.ts",
+  "types": "lib/types/modal/index.d.ts",
   "exports": {
     "./lib/index.css": "./lib/index.css",
     ".": {

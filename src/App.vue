@@ -1,12 +1,15 @@
 <template>
   <ModalProvider>
     <div class="app-container">
-      <header class="header">vue3 命令式模态框</header>
+      <header class="header">vue3命令式模态框</header>
       <section class="content">
         <div class="content_body">
           <router-view />
         </div>
       </section>
+      <div style="text-align: center; padding: 20px 0">
+        <a href="https://beian.miit.gov.cn/" target="_blank" style="font-size: 12px">京ICP备19012558号-3</a>
+      </div>
     </div>
   </ModalProvider>
 </template>
